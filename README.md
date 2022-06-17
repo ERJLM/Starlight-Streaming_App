@@ -6,8 +6,8 @@ Prerequisite
 3. your laptop have internet connection
 
 # How to run this project
-# 1. Download appliaction into your local computer
-# 2.  BUILD app to jar using this command  (mvn clean compile assembly:single)
-# 3. find jar which already build
-# 4. run jar (java -jar yourapplication.jar)
-# 5. try to run this url (localhost:8080/employee)
+ 1. Download appliaction into your local computer
+ 2.  BUILD app to jar using this command  (mvn clean compile assembly:single)
+ 3. find jar which already build
+ 4. run jar (java -jar yourapplication.jar)
+ 5. try to run this url (localhost:8080/employee)
