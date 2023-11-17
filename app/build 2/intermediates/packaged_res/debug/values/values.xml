@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <string name="app_name">Hello Toast</string>
+    <string name="back">Back</string>
+    <string name="button_label_Next">Next</string>
+    <string name="button_label_toast">Toast</string>
+    <string name="count_initial_value">0</string>
+    <string name="download_video">Download Video</string>
+    <string name="netflix">Netflix++</string>
+    <string name="netflix_message">Welcome to Netflix++</string>
+    <style name="Base.Theme.HelloToast" parent="Theme.Material3.DayNight.NoActionBar">
+        
+        
+    </style>
+    <style name="Theme.HelloToast" parent="Base.Theme.HelloToast"/>
+</resources>
