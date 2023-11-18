@@ -30,10 +30,17 @@ public class LoginActivity extends AppCompatActivity {
     private EditText passwordEdt;
     private Button loginBtn;
 
+    UserAdapter userAdapter;
+
     private AndroidWebServer server;
 
     private Login_Request userLogin;
     private User user;
+
+    private String username;
+    private String password;
+
+    private myContainer myContainer;
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static final String[] PERMISSION_STORAGE = {
@@ -64,43 +71,23 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Get user inputs from edit texts
-                String userName = userNameEdt.getText().toString();
-                String password = passwordEdt.getText().toString();
+                 username = userNameEdt.getText().toString();
+                 password = passwordEdt.getText().toString();
 
-                requestLogin(userName, password);
+                userLogin = new Login_Request(false, false);
+                requestLogin(username, password);
+                //userLogin = myContainer.getMyLogin();
+                Log.w("RequestLogin33", userLogin.toString());
 
-                // Validate user inputs
-                if (TextUtils.isEmpty(userName) || TextUtils.isEmpty(password)) {
-                    Toast.makeText(LoginActivity.this, "Please enter username and password", Toast.LENGTH_SHORT).show();
-                    return; // Stop further execution if inputs are empty
-                }
 
-                // Simulate login process (without using Parse SDK)
-                if (userName.equals("admin") && password.equals("admin")) {
-                    // Admin Login successful, switch to MainActivity
-                    Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-
-                    Intent intent = new Intent(LoginActivity.this, CMSActivity.class);
-                    intent.putExtra("username", userName);
-                    intent.putExtra("user", user);
-                    startActivity(intent);
-                } else if (userName.equals("user") && password.equals("user")) {
-                    // UserLogin successful, switch to MainActivity
-                    Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
-
-                    Intent intent = new Intent(LoginActivity.this, MovieSelectorActivityUser.class);
-                    intent.putExtra("username", userName);
-                    startActivity(intent);
-                } else {
-                    // Login failed, display error message
-                    Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
-                }
             }
         });
     }
 
-    private void requestLogin(String userName, String password) {
-        Call<Login_Request> call = RetrofitClient.getUserApi().login(userName, password);
+    private void requestLogin(String username, String password) {
+        Login_Request result;
+        Log.w("RequestLoginCampos", username + " " + password);
+        Call<Login_Request> call = RetrofitClient.getUserApi().login(username, password);
         call.enqueue(new Callback<Login_Request>() {
             @Override
             public void onResponse(Call<Login_Request> call, Response<Login_Request> response) {
@@ -109,10 +96,13 @@ public class LoginActivity extends AppCompatActivity {
                     // Do something with the list of users...
                     if (login != null) {
                         // Update the adapter with the new list of users
-                        userLogin = login;
+                        //userAdapter.setLogin(login);
+                        getResponse(login);
+                        Log.d("RequestLoginBool ", String.valueOf(login.isAdmin()));
+                        Log.d("RequestLoginBool2 ", login.toString());
                     }
                 } else {
-                    userLogin = null;
+                    Log.e("RequestLogin", "else");
                 }
             }
 
@@ -122,6 +112,37 @@ public class LoginActivity extends AppCompatActivity {
                 Log.e("RequestLogin", t.toString());
             }
         });
+    }
+
+    private void getResponse(Login_Request login) {
+        //userAdapter.setLogin(login);
+        userLogin = login;
+        // Validate user inputs
+        if (!userLogin.isValid()) {
+            Toast.makeText(LoginActivity.this, "Please enter username and password", Toast.LENGTH_SHORT).show();
+            return; // Stop further execution if inputs are empty
+        }
+        // Simulate login process (without using Parse SDK)
+        else if (userLogin.isAdmin()) {
+            // Admin Login successful, switch to MainActivity
+            Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(LoginActivity.this, CMSActivity.class);
+            intent.putExtra("username", username);
+            intent.putExtra("user", user);
+            startActivity(intent);
+        } else if(!userLogin.isAdmin()) {
+            // UserLogin successful, switch to MainActivity
+            Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+
+            Intent intent = new Intent(LoginActivity.this, MovieSelectorActivityUser.class);
+            intent.putExtra("username", username);
+            startActivity(intent);
+        } else {
+            // Login failed, display error message
+            //Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+        }
+        Log.d("RequestLoginBool ", String.valueOf(userLogin.isAdmin()));
     }
 
     private void startWebServer() {
@@ -161,4 +182,5 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 }
+
 

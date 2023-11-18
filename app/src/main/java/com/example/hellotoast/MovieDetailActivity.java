@@ -11,6 +11,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import androidx.annotation.RequiresApi;
@@ -83,7 +84,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     // User clicked Yes, implement your logic to delete the user here
-                    // deleteMovieRequest();
+                    deleteMovieRequest();
 
                     // Once the user is deleted, you can finish the activity or navigate back to the previous screen
                     back_fab.performClick();
@@ -134,9 +135,10 @@ public class MovieDetailActivity extends AppCompatActivity {
                     Boolean result = response.body();
                     // Do something with the list of users...
                     if (result == true) {
-                       //delete movie from the app
+                       getResponse(true);
                     }
                 } else {
+                    getResponse(false);
                     Log.w("RequestDeleteMovie", "Response is false");
                 }
             }
@@ -149,7 +151,10 @@ public class MovieDetailActivity extends AppCompatActivity {
         });
     }
 
-
+    private void getResponse(boolean check) {
+        if(check) Toast.makeText(this, "Movie with id = " + movie.getId()  + " was removed", Toast.LENGTH_SHORT).show();
+        else Toast.makeText(this, "Movie with id = " + movie.getId() + " couldn't be removed", Toast.LENGTH_SHORT).show();
+    }
 
 
 }

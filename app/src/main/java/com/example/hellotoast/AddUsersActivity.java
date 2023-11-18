@@ -55,7 +55,8 @@ public class AddUsersActivity extends AppCompatActivity {
     }
 
     private void requestAddUser() {
-        Call<addUser_Request> call = RetrofitClient.getUserApi().add_user(edtUserName.toString(),edtPassword.toString(),checkBoxAdmin.isChecked());
+        Call<addUser_Request> call = RetrofitClient.getUserApi().add_user(edtUserName.getText().toString(),edtPassword.getText().toString(),checkBoxAdmin.isChecked());
+
         call.enqueue(new Callback<addUser_Request>() {
             @Override
             public void onResponse(Call<addUser_Request> call, Response<addUser_Request> response) {
@@ -63,7 +64,8 @@ public class AddUsersActivity extends AppCompatActivity {
                     addUser_Request result = response.body();
                     // Do something with the list of users...
                     if (result != null) {
-                        //Add user to app
+                        getResponse(result);
+                        Log.w("RequestAddUser", "Result received " + String.valueOf(result.isConfirm()));
                     }
                 } else {
                     Log.w("RequestAddUser", "Response is null");
@@ -78,16 +80,9 @@ public class AddUsersActivity extends AppCompatActivity {
         });
     }
 
-    private void addUserToDatabase() {
-        // Get user input
-        String userName = edtUserName.getText().toString();
-        String password = edtPassword.getText().toString();
-        boolean isAdmin = checkBoxAdmin.isChecked();
-
-        //Adicionar o user
-
-
-        Toast.makeText(this, "User added to the database", Toast.LENGTH_SHORT).show();
+    private void getResponse(addUser_Request result) {
+        if (result.isConfirm()) Toast.makeText(this, "User with id = " + result.getId() + " was added", Toast.LENGTH_SHORT).show();
+        else Toast.makeText(this, "User couldn't be added", Toast.LENGTH_SHORT).show();
     }
 
 }

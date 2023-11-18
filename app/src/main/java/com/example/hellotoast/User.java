@@ -18,6 +18,15 @@ public class User implements Serializable {
     @SerializedName("seeder")
     private boolean seeder;
 
+    User(int id, String name, String password, boolean manager, String network_address){
+        this.id = id;
+        this.username = name;
+        this.password = password;
+        this.manager = manager;
+        this.network_address = network_address;
+        this.seeder = false;
+    }
+
     User(int id, String name, String password, boolean manager){
         this.id = id;
         this.username = name;
@@ -56,5 +65,9 @@ public class User implements Serializable {
 
     public int getId() {
         return id;
+    }
+
+    public void setIp(String network_address) {
+        this.network_address = network_address;
     }
 }

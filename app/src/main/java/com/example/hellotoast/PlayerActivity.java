@@ -42,7 +42,8 @@ public class PlayerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player);
         button_download = (Button) findViewById(R.id.button_download);
-        user = (User)getIntent().getSerializableExtra("user");
+        //user = (User)getIntent().getSerializableExtra("user");
+        user = new User(8, "root", "root", true, "http://ipatoa:8080");
         movie = (Movie)getIntent().getSerializableExtra("movie");
 
         videoUrl = movie.getStreamingLink();
@@ -51,10 +52,6 @@ public class PlayerActivity extends AppCompatActivity {
 
                 download_request();
 
-                String videoTitle = "movie";
-                //String file = "file.m3u8";
-                VideoDownloadManager.downloadVideo(PlayerActivity.this, videoUrl, videoTitle);
-                Log.d("BUTTONS", "User tapped the button");
             }
         });
 
@@ -76,6 +73,9 @@ public class PlayerActivity extends AppCompatActivity {
                          download_link = result.getLink_de_download();
                          num_of_chunks = result.getNum_of_chunks();
                          confirm = result.isConfirm();
+                        Log.w("RequestSeed", "Response was a Success");
+                        Log.w("RequestSeedRes", download_link + "___" + String.valueOf(num_of_chunks));
+                         getResponse(download_link, num_of_chunks, confirm);
                     }
                 } else {
                     Log.w("RequestSeed", "Response is null");
@@ -88,6 +88,21 @@ public class PlayerActivity extends AppCompatActivity {
                 Log.e("RequestSeed", t.toString());
             }
         });
+    }
+
+    private void getResponse(String downloadLink, int numOfChunks, boolean confirm) {
+
+            if(confirm){
+                download_link = downloadLink;
+                num_of_chunks = numOfChunks;
+                String videoTitle = "movie";
+                //String file = "file.m3u8";
+                VideoDownloadManager.downloadVideo(PlayerActivity.this, videoUrl, videoTitle);
+                Toast.makeText(this, "Movie was downloaded", Toast.LENGTH_SHORT).show();
+                Log.w("RequestSeed", "I got the response");
+            }
+            else Toast.makeText(this, "Couldn't download movie", Toast.LENGTH_SHORT).show();
+
     }
 
     @Override

@@ -7,15 +7,14 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
 
 
-    // MovieApi.java
+// MovieApi.java
      interface MovieApi {
-        @GET("listar_movies")
+        @GET("request/listar_movies")
         Call<List<Movie>> getMovies();
 
-        @POST("apagar_movies")
+        @POST("request/apagar_movies")
         @FormUrlEncoded
         Call<Boolean> del_movie(
                 @Field("id") int id
@@ -32,28 +31,28 @@ import retrofit2.http.Path;
         @GET("request/listar_users")
         Call<List<User>> getUsers();
 
-        @POST("login")
+        @POST("request/login")
         @FormUrlEncoded
         Call<Login_Request> login(
                 @Field("username") String username,
                 @Field("password") String password
         );
 
-        @POST("Adicionar_user")
+        @POST("request/Adicionar_user")
         @FormUrlEncoded
         Call<addUser_Request> add_user(
                 @Field("username") String username,
-                @Field("pass") String password,
+                @Field("password") String password,
                 @Field("isAdmin") boolean isAdmin
         );
 
-        @POST("Apagar_user")
+        @POST("request/Apagar_user")
         @FormUrlEncoded
         Call<Boolean> del_user(
                 @Field("id") int id
                 );
 
-        @POST("Seed")
+        @POST("request/Seed")
         @FormUrlEncoded
         Call<Seed_Request> seed(
                 @Field("ip") String ip,
@@ -109,14 +108,16 @@ class Seed_Request{
     }
 }
 
+
+
 class Login_Request {
-    private boolean valid;
-    private boolean isAdmin;
+    private Boolean valid;
+    private Boolean admin;
 
 
-    Login_Request(boolean valid, boolean isAdmin) {
+    Login_Request(Boolean valid, Boolean admin) {
         this.valid = valid;
-        this.isAdmin = isAdmin;
+        this.admin = admin;
     }
 
     public boolean isValid() {
@@ -125,9 +126,32 @@ class Login_Request {
 
 
     public boolean isAdmin() {
-        return isAdmin;
+        return admin;
+    }
+
+
+
+
+}
+
+class myContainer{
+    Login_Request myLogin;
+
+    void myContainer(Login_Request myLogin){
+        this.myLogin = myLogin;
+    }
+
+    public Login_Request getMyLogin() {
+        return myLogin;
+    }
+
+    public void setMyLogin(Login_Request myLogin) {
+        this.myLogin = myLogin;
     }
 }
+
+
+
 
 
 

@@ -69,12 +69,8 @@ public class MovieSelectorActivityUser extends AppCompatActivity implements Movi
 
         // Prepare list of movies
         List<Movie> lstMovies = new ArrayList<>();
-        lstMovies.add(new Movie(0,"Moana",  videourl));
-        lstMovies.add(new Movie(0,"Black P", videourl));
-        lstMovies.add(new Movie(0,"The Martian",videourl));
-        lstMovies.add(new Movie(0,"The Martian",videourl));
-        lstMovies.add(new Movie(0,"The Martian", videourl));
-        lstMovies.add(new Movie(0,"The Martian", videourl));
+        lstMovies.add(new Movie(0,false,"Moana",  videourl));
+
 
         // Create and set MovieAdapter
         MovieAdapter movieAdapter = new MovieAdapter(this, lstMovies, MovieSelectorActivityUser.this);

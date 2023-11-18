@@ -54,6 +54,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
         return mData.size();
     }
 
+    public void setMovies(List<Movie> mData) {
+        this.mData = mData;
+    }
+
+    public List<Movie> getMovies() {
+        return mData;
+    }
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
 

@@ -15,12 +15,14 @@ import java.util.List;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder> {
     private List<User> userList;
+
     private OnItemClickListener onItemClickListener;
 
     public UserAdapter(List<User> userList, OnItemClickListener onItemClickListener) {
         this.userList = userList;
         this.onItemClickListener = onItemClickListener;
     }
+
 
     @NonNull
     @Override
@@ -73,6 +75,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.UserViewHolder
                 }
             });
         }
+
 
 
         @SuppressLint("ResourceAsColor")

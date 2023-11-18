@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +30,7 @@ public class UserDetailActivity extends AppCompatActivity {
         // Find TextViews and Button by their IDs
         TextView textViewTitle = findViewById(R.id.textUserName);
         TextView textViewId = findViewById(R.id.textViewId);
+        TextView textViewIp = findViewById(R.id.textViewIp);
         TextView textViewName = findViewById(R.id.textViewName);
         TextView textViewPassword = findViewById(R.id.textViewPassword);
         TextView textViewAdmin = findViewById(R.id.textViewAdmin);
@@ -43,6 +45,7 @@ public class UserDetailActivity extends AppCompatActivity {
             textViewName.setText(String.format("Name: %s", user.getName()));
             textViewPassword.setText(String.format("Password: %s", user.getPassword()));
             textViewAdmin.setText(String.format("Admin: %s", user.isAdmin() ? "Yes" : "No"));
+            textViewIp.setText(String.format("Ip: %s",  user.getIp() != null ? user.getIp() : "Null"));
             textViewSeeder.setText(String.format("Seeder: %s", user.isSeeder() ? "Yes" : "No"));
         }
 
@@ -93,9 +96,11 @@ public class UserDetailActivity extends AppCompatActivity {
                         Boolean result = response.body();
                         // Do something with the list of users...
                         if (result == true) {
+                            getResponse(true);
                             //delete user from the app
                         }
                     } else {
+                        getResponse(false);
                         Log.w("RequestDeleteUser", "Response is false");
                     }
                 }
@@ -107,5 +112,10 @@ public class UserDetailActivity extends AppCompatActivity {
                 }
             });
 
+    }
+
+    private void getResponse(boolean check) {
+        if(check) Toast.makeText(this, "User with id = " + user.getId() + " was removed", Toast.LENGTH_SHORT).show();
+        else Toast.makeText(this, "User with id = " + user.getId() + " couldn't be removed", Toast.LENGTH_SHORT).show();
     }
 }

@@ -38,6 +38,7 @@ public class MovieSelectorActivity extends AppCompatActivity implements MovieIte
     private ViewPager sliderpager;
     private TabLayout indicator;
     private RecyclerView MoviesRV;
+    private MovieAdapter movieAdapter;
     private List<Movie> lstMovies;
     private String videourl = "http://www.alunos.dcc.fc.up.pt/~up202000411/file.m3u8";
 
@@ -112,18 +113,23 @@ public class MovieSelectorActivity extends AppCompatActivity implements MovieIte
         });*/
 
         // Prepare list of movies
-        //requestMovies();;
         lstMovies = new ArrayList<>();
-        lstMovies.add(new Movie(0,"Moana",  videourl));
-        lstMovies.add(new Movie(0,"Black Panther",  videourl));
-        lstMovies.add(new Movie(0,"The Martian",  videourl));
-        lstMovies.add(new Movie(0,"The Martian", videourl));
-        lstMovies.add(new Movie(0,"The Martian", videourl));
-        lstMovies.add(new Movie(0,"The Martian", videourl));
+
 
         // Create and set MovieAdapter
-        MovieAdapter movieAdapter = new MovieAdapter(this, lstMovies, MovieSelectorActivity.this);
-        MoviesRV.setAdapter(movieAdapter);
+        movieAdapter = new MovieAdapter(this, lstMovies, MovieSelectorActivity.this);
+
+
+        requestMovies();
+
+        Log.w("RequestMovies", "Movies: " + movieAdapter.getMovies().toString());
+
+        //lstMovies.add(new Movie(0,"Moana",  videourl));
+        //lstMovies.add(new Movie(0,"Black Panther",  videourl));
+        //lstMovies.add(new Movie(0,"The Martian",  videourl));
+        //lstMovies.add(new Movie(0,"The Martian", videourl));
+        //lstMovies.add(new Movie(0,"The Martian", videourl));
+        //lstMovies.add(new Movie(0,"The Martian", videourl));
 
         // Set RecyclerView layout manager
         MoviesRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -178,11 +184,13 @@ public class MovieSelectorActivity extends AppCompatActivity implements MovieIte
             @Override
             public void onResponse(Call<List<Movie>> call, Response<List<Movie>> response) {
                 if (response.isSuccessful()) {
-                    List<Movie> users = response.body();
+                    List<Movie> movies = response.body();
                     // Do something with the list of users...
-                    if (users != null) {
+                    if (movies != null) {
                         // Update the adapter with the new list of users
-                        lstMovies = response.body();
+                        movieAdapter.setMovies(movies);
+                        MoviesRV.setAdapter(movieAdapter);
+                        Log.w("RequestMovies", "Response received: " + movies.toString());
                     }
                 } else {
                     Log.w("RequestMovies", "Response is null");
