@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/stars"
     android:orientation="vertical"
-    tools:context=".UploadMovieActivity">
+    tools:context=".MovieUploadActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"

@@ -1,12 +1,17 @@
 package com.example.hellotoast;
 
+import static androidx.core.content.ContentProviderCompat.requireContext;
+
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.format.Formatter;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -40,7 +45,6 @@ public class LoginActivity extends AppCompatActivity {
     private String username;
     private String password;
 
-    private myContainer myContainer;
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static final String[] PERMISSION_STORAGE = {
@@ -73,21 +77,24 @@ public class LoginActivity extends AppCompatActivity {
                 // Get user inputs from edit texts
                  username = userNameEdt.getText().toString();
                  password = passwordEdt.getText().toString();
+                WifiManager wm = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+                String ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
+                Log.w("RequestLoginIp",ip);
 
-                userLogin = new Login_Request(false, false);
-                requestLogin(username, password);
+                //userLogin = new Login_Request(false, false, 0);
+                requestLogin(ip, username, password);
                 //userLogin = myContainer.getMyLogin();
-                Log.w("RequestLogin33", userLogin.toString());
+                //Log.w("RequestLogin33", userLogin.toString());
 
 
             }
         });
     }
 
-    private void requestLogin(String username, String password) {
+    private void requestLogin(String ip, String username, String password) {
         Login_Request result;
         Log.w("RequestLoginCampos", username + " " + password);
-        Call<Login_Request> call = RetrofitClient.getUserApi().login(username, password);
+        Call<Login_Request> call = RetrofitClient.getUserApi().login(ip, username, password);
         call.enqueue(new Callback<Login_Request>() {
             @Override
             public void onResponse(Call<Login_Request> call, Response<Login_Request> response) {
@@ -117,18 +124,18 @@ public class LoginActivity extends AppCompatActivity {
     private void getResponse(Login_Request login) {
         //userAdapter.setLogin(login);
         userLogin = login;
+        User user = new User(userLogin.getId(),username, password, userLogin.isAdmin());
         // Validate user inputs
         if (!userLogin.isValid()) {
-            Toast.makeText(LoginActivity.this, "Please enter username and password", Toast.LENGTH_SHORT).show();
-            return; // Stop further execution if inputs are empty
+            // Login failed, display error message
+            Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
         }
         // Simulate login process (without using Parse SDK)
         else if (userLogin.isAdmin()) {
-            // Admin Login successful, switch to MainActivity
+            //Admin Login successful, switch to MainActivity
             Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(LoginActivity.this, CMSActivity.class);
-            intent.putExtra("username", username);
             intent.putExtra("user", user);
             startActivity(intent);
         } else if(!userLogin.isAdmin()) {
@@ -136,11 +143,11 @@ public class LoginActivity extends AppCompatActivity {
             Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(LoginActivity.this, MovieSelectorActivityUser.class);
-            intent.putExtra("username", username);
+            intent.putExtra("user", user);
             startActivity(intent);
         } else {
-            // Login failed, display error message
-            //Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+            // Login is empty
+            Toast.makeText(LoginActivity.this, "Please enter a username and password", Toast.LENGTH_SHORT).show();
         }
         Log.d("RequestLoginBool ", String.valueOf(userLogin.isAdmin()));
     }

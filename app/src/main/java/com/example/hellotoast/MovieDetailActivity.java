@@ -37,6 +37,8 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     private Movie movie;
 
+    private User user;
+
 
 
 
@@ -48,6 +50,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         play_fab = findViewById(R.id.play_fab);
         back_fab = findViewById(R.id.back_fab);
         button_delete = findViewById(R.id.button_delete);
+        user = (User)getIntent().getSerializableExtra("user");
         movie = (Movie)getIntent().getSerializableExtra("movie");
 
         // Set click listener for login button
@@ -59,6 +62,7 @@ public class MovieDetailActivity extends AppCompatActivity {
                 String videoUrl = getIntent().getExtras().getString("videoUrl");
                 intent.putExtra("videoUrl", videoUrl);
                 intent.putExtra("movie",movie);
+                intent.putExtra("user", user);
                 startActivity(intent);
             }
         });

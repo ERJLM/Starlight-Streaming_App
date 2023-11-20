@@ -26,7 +26,7 @@ public class RetrofitClient {
 
         return client;
     }
-    private static final String BASE_URL = "http://172.17.17.125:8080/";
+    private static final String BASE_URL = "http://172.20.10.4:8080/";
 
     private static Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(BASE_URL)

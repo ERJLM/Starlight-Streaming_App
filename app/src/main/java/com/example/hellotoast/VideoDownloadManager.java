@@ -8,7 +8,7 @@ import android.util.Log;
 
 public class VideoDownloadManager {
 
-    public static void downloadVideo(Context context, String videoUrl, String title) {
+    public static String downloadVideo(Context context, String videoUrl, String title) {
         Log.d("Httpd", "Attempting to download video");
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(videoUrl));
         Log.d("Httpd", "Request made");
@@ -23,6 +23,7 @@ public class VideoDownloadManager {
         if (downloadManager != null) {
             downloadManager.enqueue(request);
         }
+        return Environment.DIRECTORY_DOWNLOADS.toString() + "/video/" + title;
     }
 }
 

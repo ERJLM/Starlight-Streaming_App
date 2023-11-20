@@ -34,6 +34,7 @@ import retrofit2.http.POST;
         @POST("request/login")
         @FormUrlEncoded
         Call<Login_Request> login(
+                @Field("ip") String ip,
                 @Field("username") String username,
                 @Field("password") String password
         );
@@ -55,7 +56,6 @@ import retrofit2.http.POST;
         @POST("request/Seed")
         @FormUrlEncoded
         Call<Seed_Request> seed(
-                @Field("ip") String ip,
                 @Field("id_User") int id_User,
                 @Field("id_Movie") int id_Movie
         );
@@ -113,11 +113,13 @@ class Seed_Request{
 class Login_Request {
     private Boolean valid;
     private Boolean admin;
+    private int id;
 
 
-    Login_Request(Boolean valid, Boolean admin) {
+    Login_Request(Boolean valid, Boolean admin, int id) {
         this.valid = valid;
         this.admin = admin;
+        this.id = id;
     }
 
     public boolean isValid() {
@@ -130,8 +132,9 @@ class Login_Request {
     }
 
 
-
-
+    public int getId() {
+        return id;
+    }
 }
 
 class myContainer{

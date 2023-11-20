@@ -46,7 +46,7 @@
             android:name=".AddUsersActivity"
             android:exported="false"/>
         <activity
-            android:name=".UploadMovieActivity"
+            android:name=".MovieUploadActivity"
             android:exported="false"/>
         <activity
             android:name=".MovieSelectorActivity"

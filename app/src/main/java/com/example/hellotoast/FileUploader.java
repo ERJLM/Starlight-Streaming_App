@@ -13,7 +13,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 public class FileUploader {
     //static String url = "http://localhost:9090/uploadServlet";
-    static String url = "http://172.17.17.125:9090/uploadServlet";
+    static String url = "http://172.20.10.4:9090/uploadServlet";
     static String charset = "UTF-8";
 
 

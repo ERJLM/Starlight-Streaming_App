@@ -1,29 +1,22 @@
 package com.example.hellotoast;
 
 import android.content.ContentResolver;
-import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
-import android.widget.VideoView;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.PickVisualMediaRequest;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-
-import com.google.android.material.button.MaterialButton;
 
 import org.apache.commons.io.FileUtils;
 
@@ -31,7 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class UploadMovieActivity extends AppCompatActivity {
+public class MovieUploadActivity extends AppCompatActivity {
     private EditText movie_nameEdt;
     String movieName;
 
@@ -39,14 +32,36 @@ public class UploadMovieActivity extends AppCompatActivity {
         @Override
         public void onActivityResult(Uri uri) {
             if (uri == null) {
-                Toast.makeText(UploadMovieActivity.this, "No video is selected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MovieUploadActivity.this, "No video is selected", Toast.LENGTH_SHORT).show();
 
             } else {
                 try {
 
-                    File file = new File(getFilePathFromContentUri(uri));
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MovieUploadActivity.this);
+                    builder.setTitle("Confirmation");
+                    builder.setMessage("Are you sure you want to upload this movie?");
 
-                    FileUploader.upload(file, movieName);
+                    // Add buttons for confirmation
+                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            File file = new File(getFilePathFromContentUri(uri));
+
+                            FileUploader.upload(file, movieName);
+                        }
+                    });
+
+                    // Add button for cancellation
+                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            // User clicked No, do nothing or handle accordingly
+                        }
+                    });
+
+                    // Show the dialog
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
                 }
                 catch(Exception e){
 
@@ -80,7 +95,7 @@ public class UploadMovieActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Intent to start CMSActivity
-                Intent intent = new Intent(UploadMovieActivity.this, MovieSelectorActivity.class);
+                Intent intent = new Intent(MovieUploadActivity.this, MovieSelectorActivity.class);
                 startActivity(intent);
             }
         });

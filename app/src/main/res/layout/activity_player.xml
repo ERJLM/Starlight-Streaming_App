@@ -16,7 +16,7 @@
         android:backgroundTint="@color/design_default_color_secondary_variant"
         android:onClick="showNetflix"
         android:orientation="vertical"
-        android:text="@string/netflix"
+        android:text="Starlight"
         android:textColor="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

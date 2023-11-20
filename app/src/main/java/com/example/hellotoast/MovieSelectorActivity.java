@@ -38,6 +38,7 @@ public class MovieSelectorActivity extends AppCompatActivity implements MovieIte
     private ViewPager sliderpager;
     private TabLayout indicator;
     private RecyclerView MoviesRV;
+    private User user;
     private MovieAdapter movieAdapter;
     private List<Movie> lstMovies;
     private String videourl = "http://www.alunos.dcc.fc.up.pt/~up202000411/file.m3u8";
@@ -49,11 +50,13 @@ public class MovieSelectorActivity extends AppCompatActivity implements MovieIte
         setContentView(R.layout.activity_movie_selector);
         Button button_upload = findViewById(R.id.button_upload);
         Button back = findViewById(R.id.back_fab);
+        user = (User)getIntent().getSerializableExtra("user");
 
 
         button_upload.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(MovieSelectorActivity.this, UploadMovieActivity.class);
+                Intent intent = new Intent(MovieSelectorActivity.this, MovieUploadActivity.class);
+                intent.putExtra("user", user);
                 startActivity(intent);
                 //FileUploader.upload();
             }
@@ -145,6 +148,7 @@ public class MovieSelectorActivity extends AppCompatActivity implements MovieIte
 
         // Send movie information to MovieDetailActivity
         intent.putExtra("movie", movie);
+        intent.putExtra("user", user);
         // Create shared element transition animation
         ActivityOptions options = ActivityOptions.makeSceneTransitionAnimation(MovieSelectorActivity.this,
                 movieImageView, "sharedName");
