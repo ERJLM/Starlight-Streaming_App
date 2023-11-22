@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class CMSActivity extends AppCompatActivity {
     private User user;
+    private AndroidWebServer server;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +20,7 @@ public class CMSActivity extends AppCompatActivity {
         Button buttonMovies = findViewById(R.id.button_movies);
         Button buttonUsers = findViewById(R.id.button_users);
         user = (User)getIntent().getSerializableExtra("user");
+        //server = (AndroidWebServer)getIntent().getSerializableExtra("server");
 
 
 
@@ -28,6 +30,7 @@ public class CMSActivity extends AppCompatActivity {
                 // Intent to start ManageMoviesActivity
                 Intent intent = new Intent(CMSActivity.this, MovieSelectorActivity.class);
                 intent.putExtra("user", user);
+                //intent.putExtra("server", server);
                 startActivity(intent);
             }
         });

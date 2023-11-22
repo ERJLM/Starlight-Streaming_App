@@ -63,7 +63,7 @@ public class Movie implements Serializable {
         this.description = description;
     }
 
-    public Boolean getSeeded() {
+    public Boolean isSeeded() {
         return seeded;
     }
 

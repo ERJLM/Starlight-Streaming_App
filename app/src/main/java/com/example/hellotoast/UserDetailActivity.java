@@ -46,7 +46,7 @@ public class UserDetailActivity extends AppCompatActivity {
             textViewPassword.setText(String.format("Password: %s", user.getPassword()));
             textViewAdmin.setText(String.format("Admin: %s", user.isAdmin() ? "Yes" : "No"));
             textViewIp.setText(String.format("Ip: %s",  user.getIp() != null ? user.getIp() : "Null"));
-            textViewSeeder.setText(String.format("Seeder: %s", user.isSeeder() ? "Yes" : "No"));
+            textViewSeeder.setText(String.format("Seeder: %s", user.getSeeder()));
         }
 
         //Delete User

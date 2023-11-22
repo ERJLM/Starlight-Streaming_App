@@ -39,6 +39,7 @@ public class MovieSelectorActivity extends AppCompatActivity implements MovieIte
     private TabLayout indicator;
     private RecyclerView MoviesRV;
     private User user;
+    private AndroidWebServer server;
     private MovieAdapter movieAdapter;
     private List<Movie> lstMovies;
     private String videourl = "http://www.alunos.dcc.fc.up.pt/~up202000411/file.m3u8";
@@ -51,12 +52,14 @@ public class MovieSelectorActivity extends AppCompatActivity implements MovieIte
         Button button_upload = findViewById(R.id.button_upload);
         Button back = findViewById(R.id.back_fab);
         user = (User)getIntent().getSerializableExtra("user");
+        //server = (AndroidWebServer)getIntent().getSerializableExtra("server");
 
 
         button_upload.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(MovieSelectorActivity.this, MovieUploadActivity.class);
                 intent.putExtra("user", user);
+                intent.putExtra("server", server);
                 startActivity(intent);
                 //FileUploader.upload();
             }

@@ -50,6 +50,7 @@ public class PlayerActivity extends AppCompatActivity {
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,10 +58,18 @@ public class PlayerActivity extends AppCompatActivity {
         button_download = (Button) findViewById(R.id.button_download);
         user = (User)getIntent().getSerializableExtra("user");
         Log.w("USEROLL", String.valueOf(user));
-        //user = new User(8, "root", "root", true, "http://ipatoa:8080");
+
         movie = (Movie)getIntent().getSerializableExtra("movie");
 
         videoUrl = movie.getStreamingLink();
+
+        if (videoUrl.contains(":8080")){
+            Log.w("USEROLL", "YES1122");
+            assert AndroidWebServer.getInstance() != null;
+            AndroidWebServer.getInstance().setMovie_info(movie.getId(), movie.getStreamingLink());
+            videoUrl = "http://localhost:8080/playlist.m3u8";
+        }
+        Log.w("myLink22", videoUrl);
         button_download.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
@@ -84,12 +93,12 @@ public class PlayerActivity extends AppCompatActivity {
                     Seed_Request  result = response.body();
                     // Do something with the list of users...
                     if (result != null) {
-                         download_link = result.getLink_de_download();
-                         num_of_chunks = result.getNum_of_chunks();
-                         confirm = result.isConfirm();
+                        download_link = result.getLink_de_download();
+                        num_of_chunks = result.getNum_of_chunks();
+                        confirm = result.isConfirm();
                         Log.w("RequestSeed", "Response was a Success");
                         Log.w("RequestSeedRes", download_link + "___" + num_of_chunks + "___" + confirm);
-                         getResponse(download_link, num_of_chunks, confirm);
+                        getResponse(download_link, num_of_chunks, confirm);
                     }
                 } else {
                     Log.w("RequestSeed", "Response is null");
@@ -106,19 +115,19 @@ public class PlayerActivity extends AppCompatActivity {
 
     private void getResponse(String downloadLink, int numOfChunks, boolean confirm) {
 
-            if(confirm) {
+        if(confirm) {
 
-                for (int i = 0; i < num_of_chunks; i++) {
-                    String title = "data" + String.format("%03d", i) + ".ts";
-                    String chunkUrl = download_link + "/" + title;
-                    String localFilePath = VideoDownloadManager.downloadVideo(PlayerActivity.this, chunkUrl, title );
-                    Log.w("RequestSeed", "chunk " + i + "downloaded with url: " + chunkUrl);
-                }
-                String movieUrl = download_link + "/playlist.m3u8";
-                VideoDownloadManager.downloadVideo(PlayerActivity.this, movieUrl, "playlist.m3u8");
-                Toast.makeText(this, "Movie was downloaded", Toast.LENGTH_SHORT).show();
+            for (int i = 0; i < num_of_chunks; i++) {
+                String title = "data" + String.format("%03d", i) + ".ts";
+                String chunkUrl = download_link + "/" + title;
+                String localFilePath = VideoDownloadManager.downloadVideo(PlayerActivity.this, chunkUrl, title );
+                Log.w("RequestSeed", "chunk " + i + "downloaded with url: " + chunkUrl);
             }
-            else Toast.makeText(this, "Couldn't download movie", Toast.LENGTH_SHORT).show();
+            String movieUrl = download_link + "/playlist.m3u8";
+            VideoDownloadManager.downloadVideo(PlayerActivity.this, movieUrl, "playlist.m3u8");
+            Toast.makeText(this, "Movie was downloaded", Toast.LENGTH_SHORT).show();
+        }
+        else Toast.makeText(this, "Couldn't download movie", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -172,8 +181,9 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     public void back(View view) {
-        Intent intent = new Intent(PlayerActivity.this, MovieSelectorActivity.class);
-        //intent.putExtra("username", userName);
+        Intent intent = new Intent(PlayerActivity.this, MovieDetailActivity.class);
+        intent.putExtra("movie",movie);
+        intent.putExtra("user", user);
         startActivity(intent);
     }
 

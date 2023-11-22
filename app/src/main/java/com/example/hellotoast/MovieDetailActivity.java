@@ -35,9 +35,10 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     private Button button_delete;
 
-    private Movie movie;
+    private static Movie movie;
 
     private User user;
+    private AndroidWebServer server;
 
 
 
@@ -52,6 +53,8 @@ public class MovieDetailActivity extends AppCompatActivity {
         button_delete = findViewById(R.id.button_delete);
         user = (User)getIntent().getSerializableExtra("user");
         movie = (Movie)getIntent().getSerializableExtra("movie");
+        requestMovie();
+       // server = (AndroidWebServer)getIntent().getSerializableExtra("server");
 
         // Set click listener for login button
         play_fab.setOnClickListener(new View.OnClickListener() {
@@ -60,9 +63,9 @@ public class MovieDetailActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(MovieDetailActivity.this, PlayerActivity.class);
                 String videoUrl = getIntent().getExtras().getString("videoUrl");
-                intent.putExtra("videoUrl", videoUrl);
                 intent.putExtra("movie",movie);
                 intent.putExtra("user", user);
+                //intent.putExtra("server", server);
                 startActivity(intent);
             }
         });
@@ -158,6 +161,38 @@ public class MovieDetailActivity extends AppCompatActivity {
     private void getResponse(boolean check) {
         if(check) Toast.makeText(this, "Movie with id = " + movie.getId()  + " was removed", Toast.LENGTH_SHORT).show();
         else Toast.makeText(this, "Movie with id = " + movie.getId() + " couldn't be removed", Toast.LENGTH_SHORT).show();
+    }
+
+    private void requestMovie() {
+        Call<Movie> call = RetrofitClient.getMovieApi().get_movie(movie.getId());
+        call.enqueue(new Callback<Movie>() {
+            @Override
+            public void onResponse(Call<Movie> call, Response<Movie> response) {
+                if (response.isSuccessful()) {
+                    Movie res = response.body();
+                    // Do something with the list of users...
+                    if (res != null) {
+                        // Update the adapter with the new list of users
+                        //userAdapter.setLogin(login);
+                        getResponseMovie(res);
+
+                    }
+                } else {
+                    Log.e("RequestLogin", "else");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Movie> call, Throwable t) {
+                t.toString();
+                Log.e("RequestLogin", t.toString());
+            }
+        });
+    }
+
+    private void getResponseMovie(Movie res) {
+        movie = res;
+        Log.i("MYMOVIE", String.valueOf(movie.isSeeded()));
     }
 
 

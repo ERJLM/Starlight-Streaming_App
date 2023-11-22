@@ -7,6 +7,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 
 // MovieApi.java
@@ -20,8 +21,22 @@ import retrofit2.http.POST;
                 @Field("id") int id
         );
 
-       // @GET("movies/{id}")
-       // Call<Movie> getMovieById(@Path("id") int movieId);
+     @POST("request/get_hash")
+     @FormUrlEncoded
+     Call<MyString> get_hash(
+            @Field("id") int id,
+            @Field("filename") String filename
+    );
+
+    @POST("request/get_hashArray")
+    @FormUrlEncoded
+    Call<String[]> get_hashArray(
+            @Field("id") int id
+    );
+
+    @POST("request/get_movie")
+    @FormUrlEncoded
+    Call<Movie> get_movie(@Field("id") int movieId);
 
         // Other movie-related endpoints
     }
@@ -60,7 +75,14 @@ import retrofit2.http.POST;
                 @Field("id_Movie") int id_Movie
         );
 
-       // @GET("users/{id}")
+        @POST("request/get_hash_server")
+        @FormUrlEncoded
+        Call<MyString> get_hash_server(
+                @Field("id") int id,
+                @Field("filename") String filename
+        );
+
+       // @POST("users/{id}")
        // Call<User> getUserById(@Path("id") int userId);
 
         // Other user-related endpoints
@@ -137,20 +159,19 @@ class Login_Request {
     }
 }
 
-class myContainer{
-    Login_Request myLogin;
+class MyString
+{
+    String string;
 
-    void myContainer(Login_Request myLogin){
-        this.myLogin = myLogin;
+    public MyString(String string) {
+        this.string = string;
+
     }
 
-    public Login_Request getMyLogin() {
-        return myLogin;
+    public String getString() {
+        return string;
     }
 
-    public void setMyLogin(Login_Request myLogin) {
-        this.myLogin = myLogin;
-    }
 }
 
 

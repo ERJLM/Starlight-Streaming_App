@@ -44,6 +44,8 @@ public class LoginActivity extends AppCompatActivity {
 
     private String username;
     private String password;
+    Intent intentAdmin;
+
 
 
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
@@ -60,7 +62,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        intentAdmin = new Intent(LoginActivity.this, CMSActivity.class);
         startWebServer();
         verifyStoragePermission(this);
 
@@ -135,15 +137,17 @@ public class LoginActivity extends AppCompatActivity {
             //Admin Login successful, switch to MainActivity
             Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
-            Intent intent = new Intent(LoginActivity.this, CMSActivity.class);
-            intent.putExtra("user", user);
-            startActivity(intent);
+
+            intentAdmin.putExtra("user", user);
+            Log.d("UOLEE", "step0");
+            startActivity(intentAdmin);
         } else if(!userLogin.isAdmin()) {
             // UserLogin successful, switch to MainActivity
             Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(LoginActivity.this, MovieSelectorActivityUser.class);
             intent.putExtra("user", user);
+
             startActivity(intent);
         } else {
             // Login is empty
@@ -155,7 +159,9 @@ public class LoginActivity extends AppCompatActivity {
     private void startWebServer() {
         server = new AndroidWebServer(8080);
         try {
+            //intentAdmin.putExtra("server", server);
             server.start();
+            Log.w("Httpd", "HEY " + server.toString());
             Log.w("Httpd", "Web server initialized*.");
 
         } catch (IOException ioe) {

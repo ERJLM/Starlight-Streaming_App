@@ -16,7 +16,7 @@ public class User implements Serializable {
     @SerializedName("manager")
     private boolean manager;
     @SerializedName("seeder")
-    private boolean seeder;
+    private int seeder;
 
     User(int id, String name, String password, boolean manager, String network_address){
         this.id = id;
@@ -24,7 +24,7 @@ public class User implements Serializable {
         this.password = password;
         this.manager = manager;
         this.network_address = network_address;
-        this.seeder = false;
+        this.seeder = 0;
     }
 
     User(int id, String name, String password, boolean manager){
@@ -33,7 +33,7 @@ public class User implements Serializable {
         this.password = password;
         this.manager = manager;
         this.network_address = null;
-        this.seeder = false;
+        this.seeder = 0;
     }
 
     public String getName() {
@@ -48,7 +48,7 @@ public class User implements Serializable {
         return manager;
     }
 
-    public boolean isSeeder() {
+    public int isSeeder() {
         return seeder;
     }
 
@@ -58,13 +58,17 @@ public class User implements Serializable {
 
 
 
-    public void setSeeder(boolean isSeeder) {
+    public void setSeeder(int isSeeder) {
         this.seeder = isSeeder;
     }
 
 
     public int getId() {
         return id;
+    }
+
+    public int getSeeder() {
+        return seeder;
     }
 
     public void setIp(String network_address) {
