@@ -53,7 +53,9 @@ public class MovieDetailActivity extends AppCompatActivity {
         button_delete = findViewById(R.id.button_delete);
         user = (User)getIntent().getSerializableExtra("user");
         movie = (Movie)getIntent().getSerializableExtra("movie");
+        Log.i("Herioo Movie", String.valueOf(movie.getId()));
         requestMovie();
+        Log.i("HeriooMovieAfterrequest", String.valueOf(movie.getId()));
        // server = (AndroidWebServer)getIntent().getSerializableExtra("server");
 
         // Set click listener for login button

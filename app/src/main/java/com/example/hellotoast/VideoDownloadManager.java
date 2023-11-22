@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
+import java.io.File;
+
 public class VideoDownloadManager {
 
     public static String downloadVideo(Context context, String videoUrl, String title) {
@@ -17,6 +19,9 @@ public class VideoDownloadManager {
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
 
         // Set the destination path for the downloaded video
+        String path = "/sdcard/Download/video/" + title;
+        deleteFile(path);
+        Log.d("Herioo Path DownloadMan", path);
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "/video/" + title);
 
         DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
@@ -24,6 +29,14 @@ public class VideoDownloadManager {
             downloadManager.enqueue(request);
         }
         return Environment.DIRECTORY_DOWNLOADS.toString() + "/video/" + title;
+    }
+
+    private static boolean deleteFile(String path){
+
+        File folder1 = new File(path);
+        return folder1.delete();
+
+
     }
 }
 

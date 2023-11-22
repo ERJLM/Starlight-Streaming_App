@@ -14,6 +14,7 @@ import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 import fi.iki.elonen.NanoHTTPD;
@@ -33,6 +34,7 @@ public class AndroidWebServer extends NanoHTTPD implements Serializable {
     private String[] expectedHash= new String[1];
 
     private static AndroidWebServer singleton = null;
+    private static HashMap<String, String> SHAMap;
 
     public AndroidWebServer() {
         super(8080);
@@ -79,20 +81,29 @@ public class AndroidWebServer extends NanoHTTPD implements Serializable {
         }
         else {
             try {
+                Log.i("HERIOO SERA Q ENTROU", "step0");
                 URL url = new URL("http://localhost:8080/server" + uri);
+                Log.i("HERIOO My URI", "http://localhost:8080/server" + uri);
+                Log.i("HERIOO SERA Q ENTROU", "step1");
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                Log.i("HERIOO SERA Q ENTROU", "step2");
                 connection.setRequestMethod("GET");
+                Log.i("HERIOO SERA Q ENTROU", "step3");
 
                 int responseCode = connection.getResponseCode();
+                Log.i("HERIOO SERA Q ENTROU", "HERR");
                 if(responseCode == HttpURLConnection.HTTP_OK){
+                    Log.i("HERIOO ENTROU", "HERR");
+                    expectedHash[0] = null;
+                    Log.i("HERIOO ENTROU Android", String.valueOf(movie_id));
+                    requestFileHash(movie_id, uri.substring(uri.lastIndexOf('/')+1));
                     InputStream inStream =connection.getInputStream();
-                    Log.d("HERIOO1", "HEREE");
                     File file = new File("/sdcard/Download" + uri);
-                    Log.d("HERIOO1.5", "HEREE");
-                    //file.createNewFile();
-                    Log.d("HERIOO2", "HEREE");
                     FileUtils.copyInputStreamToFile(inStream, file);
-                    Log.d("HERIOO3", "HERE " + file.toString());
+                    while(expectedHash[0] == null);
+                    if(!SHA256.getHash(file).equals(expectedHash[0])){
+                        return res;
+                    }
                     if (uri.contains(".m3u8"))
                         res = newFixedLengthResponse(Response.Status.PARTIAL_CONTENT, "application/vnd.apple.mpegurl", new FileInputStream(file), (int) file.length());
                     else
@@ -114,19 +125,23 @@ public class AndroidWebServer extends NanoHTTPD implements Serializable {
     }
 
     private void requestFileHash(int id, String filename) {
-        Call<MyString> call =RetrofitClient.getUserApi().get_hash_server(id, filename);
+        Call<MyString> call =RetrofitClient.getMovieApi().get_hash(id, filename);
         String TAG = "RequestFileHash";
+        Log.d(TAG, "HASHSHSH");
+        Log.i(TAG, String.valueOf(id));
         call.enqueue(new Callback<MyString>() {
             @Override
             public void onResponse(Call<MyString> call, retrofit2.Response<MyString> response) {
+
                 Log.e(TAG, String.valueOf(response.isSuccessful()));
                 if (response.isSuccessful()) {
                     String fileHash = response.body().getString();
+                    if(fileHash == null) Log.i(TAG, "Hash é nula");
                     expectedHash[0] = fileHash;
                     Log.e(TAG, fileHash);
                     //Log.w("ExpectedHashForChunk", expectedHash[0]);
                     if (!fileHash.equals(null)) {
-
+                        expectedHash[0] = fileHash;
                     }
                     else Log.e(TAG, "HEY");
                 } else {
@@ -140,6 +155,8 @@ public class AndroidWebServer extends NanoHTTPD implements Serializable {
             }
         });
     }
+
+
 
 
 }

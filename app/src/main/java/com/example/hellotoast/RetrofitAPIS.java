@@ -30,7 +30,7 @@ import retrofit2.http.Path;
 
     @POST("request/get_hashArray")
     @FormUrlEncoded
-    Call<String[]> get_hashArray(
+    Call<List<String>> get_hashArray(
             @Field("id") int id
     );
 

@@ -1,6 +1,7 @@
 package com.example.hellotoast;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.media3.common.MediaItem;
 
@@ -66,6 +68,7 @@ public class PlayerActivity extends AppCompatActivity {
         if (videoUrl.contains(":8080")){
             Log.w("USEROLL", "YES1122");
             assert AndroidWebServer.getInstance() != null;
+            Log.i("HERIOO ENTROU no Player", String.valueOf(movie.getId()));
             AndroidWebServer.getInstance().setMovie_info(movie.getId(), movie.getStreamingLink());
             videoUrl = "http://localhost:8080/playlist.m3u8";
         }
@@ -73,7 +76,31 @@ public class PlayerActivity extends AppCompatActivity {
         button_download.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                download_request();
+                AlertDialog.Builder builder = new AlertDialog.Builder(PlayerActivity.this);
+                builder.setTitle("Confirmation");
+                builder.setMessage("Are you sure you want to be the seeder of this movie?");
+
+                // Add buttons for confirmation
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        download_request();
+                    }
+                });
+
+                // Add button for cancellation
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // User clicked No, do nothing or handle accordingly
+                    }
+                });
+
+                // Show the dialog
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+
 
             }
         });
@@ -185,65 +212,6 @@ public class PlayerActivity extends AppCompatActivity {
         intent.putExtra("movie",movie);
         intent.putExtra("user", user);
         startActivity(intent);
-    }
-
-    public void changeVideo(View view) {
-        videoUrl = "https://demo.unified-streaming.com/k8s/features/stable/video/tears-of-steel/tears-of-steel.ism/.m3u8";
-        MediaItem mediaItem = MediaItem.fromUri(videoUrl);
-        player.setMediaItem(mediaItem);
-        player.prepare();
-        player.setPlayWhenReady(true);
-    }
-
-    private int getChunkNumber(String url) {
-        String[] parts = url.split("/");
-        String lastPart = parts[parts.length - 1];
-        if (lastPart.startsWith("data") && lastPart.endsWith(".ts")) {
-            try {
-                return Integer.parseInt(lastPart.substring(4, lastPart.length() - 3));
-            } catch (NumberFormatException e) {
-                return -1; // Invalid chunk number format
-            }
-        }
-        return -1; // Not a chunk URL
-    }
-
-    private String getLocalFilePath(int chunkNumber) {
-        // Modify this method to return the local file path based on your file storage strategy
-        // Example: Assume chunks are saved in the app's cache directory
-        String fileName = "data" + String.format("%03d", chunkNumber) + ".ts";
-        return Environment.DIRECTORY_DOWNLOADS.toString() + "/video/" + fileName;
-    }
-
-
-    private static String expectedHashForChunk(int chunkNumber) {
-        // Calculate and return the expected SHA-256 hash for the given chunk number
-        // Pedir ao server o expected chunkNumber;
-        return null;
-    }
-
-    private boolean checkChunkHash(String localFilePath, String expectedHash) {
-        // Implement hash verification logic here using your preferred algorithm
-        // Example: SHA-256
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] fileData = FileUtils.readFileToByteArray(new File(localFilePath));
-            byte[] hashBytes = md.digest(fileData);
-            String actualHash = bytesToHex(hashBytes);
-            return actualHash.equals(expectedHash);
-        } catch (NoSuchAlgorithmException | IOException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-
-    private String bytesToHex(byte[] bytes) {
-        StringBuilder hexStringBuilder = new StringBuilder(2 * bytes.length);
-        for (byte b : bytes) {
-            hexStringBuilder.append(String.format("%02x", b));
-        }
-        return hexStringBuilder.toString();
     }
 
 
