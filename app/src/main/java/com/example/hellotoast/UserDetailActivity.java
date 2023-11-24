@@ -32,7 +32,6 @@ public class UserDetailActivity extends AppCompatActivity {
         TextView textViewId = findViewById(R.id.textViewId);
         TextView textViewIp = findViewById(R.id.textViewIp);
         TextView textViewName = findViewById(R.id.textViewName);
-        TextView textViewPassword = findViewById(R.id.textViewPassword);
         TextView textViewAdmin = findViewById(R.id.textViewAdmin);
         TextView textViewSeeder = findViewById(R.id.textViewSeeder);
         Button btnDeleteUser = findViewById(R.id.idBtnDeleteUser);
@@ -43,7 +42,6 @@ public class UserDetailActivity extends AppCompatActivity {
             textViewTitle.setText(user.getName());
             textViewId.setText(String.format("Id: %s", user.getId()));
             textViewName.setText(String.format("Name: %s", user.getName()));
-            textViewPassword.setText(String.format("Password: %s", user.getPassword()));
             textViewAdmin.setText(String.format("Admin: %s", user.isAdmin() ? "Yes" : "No"));
             textViewIp.setText(String.format("Ip: %s",  user.getIp() != null ? user.getIp() : "Null"));
             textViewSeeder.setText(String.format("Seeder: %s", user.getSeeder()));

@@ -28,10 +28,11 @@ import retrofit2.http.Path;
             @Field("filename") String filename
     );
 
-    @POST("request/get_hashArray")
+    @POST("request/get_hashes")
     @FormUrlEncoded
-    Call<List<String>> get_hashArray(
-            @Field("id") int id
+    Call<List<Hash>> get_hashes(
+            @Field("id") int id,
+            @Field("filename") String filename
     );
 
     @POST("request/get_movie")
@@ -170,6 +171,25 @@ class MyString
 
     public String getString() {
         return string;
+    }
+
+}
+
+class Hash
+{
+    String filename,hash;
+
+    public Hash(String filename, String hash) {
+        this.filename = filename;
+        this.hash = hash;
+    }
+
+    public String getFilename() {
+        return filename;
+    }
+
+    public String getHash() {
+        return hash;
     }
 
 }

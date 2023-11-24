@@ -15,6 +15,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import fi.iki.elonen.NanoHTTPD;
@@ -32,9 +33,10 @@ public class AndroidWebServer extends NanoHTTPD implements Serializable {
     private String movie_url;
 
     private String[] expectedHash= new String[1];
+    private static boolean[] check = new boolean[1];
 
     private static AndroidWebServer singleton = null;
-    private static HashMap<String, String> SHAMap;
+    private static HashMap<String, String> SHAMap = new HashMap<>();
 
     public AndroidWebServer() {
         super(8080);
@@ -63,7 +65,10 @@ public class AndroidWebServer extends NanoHTTPD implements Serializable {
     public Response answer(String uri)
     {
         Response res = null;
-        if(uri.contains("server")){
+        if(uri.contains("ping")){
+            res = newFixedLengthResponse(Response.Status.OK, "*/*", null,0);
+        }
+        else if(uri.contains("server")){
             uri = uri.replace("/server", "");
             File file = new File("/sdcard/Download/video"+uri);
 
@@ -93,15 +98,19 @@ public class AndroidWebServer extends NanoHTTPD implements Serializable {
                 int responseCode = connection.getResponseCode();
                 Log.i("HERIOO SERA Q ENTROU", "HERR");
                 if(responseCode == HttpURLConnection.HTTP_OK){
+                    String filename =  uri.substring(uri.lastIndexOf('/')+1);
                     Log.i("HERIOO ENTROU", "HERR");
-                    expectedHash[0] = null;
+                    check[0] = false;
                     Log.i("HERIOO ENTROU Android", String.valueOf(movie_id));
-                    requestFileHash(movie_id, uri.substring(uri.lastIndexOf('/')+1));
+                    Log.i("HERIOO ENTROU Android2", movie_url);
                     InputStream inStream =connection.getInputStream();
                     File file = new File("/sdcard/Download" + uri);
                     FileUtils.copyInputStreamToFile(inStream, file);
-                    while(expectedHash[0] == null);
-                    if(!SHA256.getHash(file).equals(expectedHash[0])){
+                    if(!SHAMap.containsKey(filename)) {
+                        requestListHash(movie_id, filename);
+                        //while (!check[0]) ;
+                    }
+                    if(!SHA256.getHash(file).equals(SHAMap.get(filename))){
                         return res;
                     }
                     if (uri.contains(".m3u8"))
@@ -124,38 +133,35 @@ public class AndroidWebServer extends NanoHTTPD implements Serializable {
         this.movie_url = url;
     }
 
-    private void requestFileHash(int id, String filename) {
-        Call<MyString> call =RetrofitClient.getMovieApi().get_hash(id, filename);
+
+    private void requestListHash(int id, String filename) {
+        Call<List<Hash>> call =RetrofitClient.getMovieApi().get_hashes(id, filename);
         String TAG = "RequestFileHash";
         Log.d(TAG, "HASHSHSH");
         Log.i(TAG, String.valueOf(id));
-        call.enqueue(new Callback<MyString>() {
-            @Override
-            public void onResponse(Call<MyString> call, retrofit2.Response<MyString> response) {
+        try {
+            retrofit2.Response<List<Hash>> response = call.execute();
 
-                Log.e(TAG, String.valueOf(response.isSuccessful()));
-                if (response.isSuccessful()) {
-                    String fileHash = response.body().getString();
-                    if(fileHash == null) Log.i(TAG, "Hash é nula");
-                    expectedHash[0] = fileHash;
+            if (response.isSuccessful()) {
+                assert response.body() != null;
+                for (Hash h : response.body()) {
+                    String name = h.getFilename();
+                    String fileHash = h.getHash();
+                    //if(fileHash == null) Log.i(TAG, "Hash é nula");
+                    SHAMap.put(name, fileHash);
                     Log.e(TAG, fileHash);
                     //Log.w("ExpectedHashForChunk", expectedHash[0]);
-                    if (!fileHash.equals(null)) {
-                        expectedHash[0] = fileHash;
-                    }
-                    else Log.e(TAG, "HEY");
-                } else {
-                    Log.e(TAG, "Failed to retrieve file hash");
                 }
-            }
 
-            @Override
-            public void onFailure(Call<MyString> call, Throwable t) {
-                Log.e(TAG, "Error in Retrofit request", t);
+                check[0] = true;
+            }   else {
+                Log.e(TAG, "Failed to retrieve file hash");
             }
-        });
+        } catch (IOException e) {
+            Log.e("RequestMovie", "Error in Retrofit request", e);
+        }
+
     }
-
 
 
 

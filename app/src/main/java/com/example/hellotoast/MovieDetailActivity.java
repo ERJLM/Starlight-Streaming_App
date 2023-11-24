@@ -39,6 +39,7 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     private User user;
     private AndroidWebServer server;
+    private static boolean[] check = new boolean[1];
 
 
 
@@ -54,7 +55,11 @@ public class MovieDetailActivity extends AppCompatActivity {
         user = (User)getIntent().getSerializableExtra("user");
         movie = (Movie)getIntent().getSerializableExtra("movie");
         Log.i("Herioo Movie", String.valueOf(movie.getId()));
+        //check[0] = false;
+        //check[0] = true;
         requestMovie();
+        Log.i("Herioo Movie", String.valueOf(check[0]));
+        //while(!check[0]);
         Log.i("HeriooMovieAfterrequest", String.valueOf(movie.getId()));
        // server = (AndroidWebServer)getIntent().getSerializableExtra("server");
 
@@ -196,6 +201,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         movie = res;
         Log.i("MYMOVIE", String.valueOf(movie.isSeeded()));
     }
+
 
 
 }

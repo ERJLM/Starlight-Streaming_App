@@ -49,6 +49,7 @@ public class PlayerActivity extends AppCompatActivity {
     private int num_of_chunks;
     private User user;
     private Movie movie;
+    private static boolean[] check = new boolean[1];
 
 
 
@@ -60,10 +61,12 @@ public class PlayerActivity extends AppCompatActivity {
         button_download = (Button) findViewById(R.id.button_download);
         user = (User)getIntent().getSerializableExtra("user");
         Log.w("USEROLL", String.valueOf(user));
-
         movie = (Movie)getIntent().getSerializableExtra("movie");
+        if(movie.isSeeded() /*|| user.getSeeder() > 0*/) button_download.setVisibility(View.GONE);
+
 
         videoUrl = movie.getStreamingLink();
+        Log.w("myLink22", videoUrl);
 
         if (videoUrl.contains(":8080")){
             Log.w("USEROLL", "YES1122");
@@ -84,7 +87,9 @@ public class PlayerActivity extends AppCompatActivity {
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        check[0] = false;
                         download_request();
+                        //while(!check[0]){}
                     }
                 });
 
@@ -111,15 +116,16 @@ public class PlayerActivity extends AppCompatActivity {
         Log.d("MyApp", "Activity created");
     }
 
-    private void download_request() {
+    private void download_request(){
         Call<Seed_Request> call = RetrofitClient.getUserApi().seed(user.getId(), movie.getId());
-        call.enqueue(new Callback<Seed_Request>() {
+        call.enqueue(new Callback<Seed_Request>(){
             @Override
             public void onResponse(Call<Seed_Request> call, Response<Seed_Request> response) {
                 if (response.isSuccessful()) {
                     Seed_Request  result = response.body();
                     // Do something with the list of users...
                     if (result != null) {
+                        check[0] = true;
                         download_link = result.getLink_de_download();
                         num_of_chunks = result.getNum_of_chunks();
                         confirm = result.isConfirm();
@@ -153,6 +159,7 @@ public class PlayerActivity extends AppCompatActivity {
             String movieUrl = download_link + "/playlist.m3u8";
             VideoDownloadManager.downloadVideo(PlayerActivity.this, movieUrl, "playlist.m3u8");
             Toast.makeText(this, "Movie was downloaded", Toast.LENGTH_SHORT).show();
+            button_download.setVisibility(View.GONE);
         }
         else Toast.makeText(this, "Couldn't download movie", Toast.LENGTH_SHORT).show();
 
@@ -170,29 +177,6 @@ public class PlayerActivity extends AppCompatActivity {
         PlayerView playerView = findViewById(R.id.playerView);
         player = new ExoPlayer.Builder(PlayerActivity.this).build();
 
-        //Setting up chunk verification while playing
-     /*   player.addAnalyticsListener(new AnalyticsListener() {
-           @Override
-            public void onLoadStarted(
-                    EventTime eventTime,
-                    LoadEventInfo loadEventInfo,
-                    MediaLoadData mediaLoadData) {
-                // Check the hash when a chunk is loaded
-                int chunkNumber = getChunkNumber(loadEventInfo.uri.toString());
-                if (chunkNumber >= 0) {
-                    String localFilePath = getLocalFilePath(chunkNumber);
-                    if (localFilePath != null) {
-                        boolean isHashValid = checkChunkHash(localFilePath, expectedHashForChunk(chunkNumber));
-                        if (!isHashValid) {
-                            // Handle invalid hash during playback, e.g., retry or notify the user
-                            finish();
-                            Toast.makeText(PlayerActivity.this,"Invalid hash for chunk: " + String.valueOf(chunkNumber),Toast.LENGTH_SHORT).show();
-                            // You may also want to handle skipping or stopping playback
-                        }
-                    }
-                }
-            }
-        }); */
 
         playerView.setPlayer(player);
         MediaItem mediaItem = MediaItem.fromUri(videoUrl);

@@ -16,7 +16,7 @@ public class VideoDownloadManager {
         Log.d("Httpd", "Request made");
         request.setTitle(title);
         request.setDescription("Downloading video");
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
 
         // Set the destination path for the downloaded video
         String path = "/sdcard/Download/video/" + title;
