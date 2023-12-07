@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/stars"
+    android:orientation="vertical"
+    tools:context=".AddUsersActivity">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardView"
+        android:layout_width="329dp"
+        android:layout_height="468dp"
+
+        android:layout_margin="30dp"
+        app:cardBackgroundColor="@color/material_dynamic_primary40"
+        app:layout_constraintBottom_toTopOf="@+id/button_back"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.266">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="455dp"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+
+            <!--text view for heading-->
+
+            <!--edit text for user name-->
+            <TextView
+                android:id="@+id/idTVHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:fontFamily="@font/alatsi"
+                android:gravity="center_horizontal"
+                android:padding="5dp"
+                android:text="Add Users"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@color/black"
+                android:textSize="24sp" />
+
+            <EditText
+                android:id="@+id/idEdtUserName"
+                android:layout_width="260dp"
+                android:layout_height="30dp"
+                android:layout_below="@id/idTVHeader"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/rect_text"
+                android:hint="Enter username"
+                android:inputType="textEmailAddress" />
+
+            <!--edit text for user password-->
+
+            <!--button to register our new user-->
+
+            <EditText
+                android:id="@+id/idEdtPassword"
+                android:layout_width="260dp"
+                android:layout_height="30dp"
+                android:layout_below="@id/idEdtUserName"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/rect_text"
+                android:hint="Enter password"
+                android:inputType="textPassword" />
+
+            <CheckBox
+                android:id="@+id/checkbox_admin"
+                android:layout_width="275dp"
+                android:layout_height="43dp"
+                android:layout_marginStart="10dp"
+                android:hapticFeedbackEnabled="false"
+                android:minHeight="55dp"
+                android:scrollHorizontally="false"
+                android:text="Admin"
+                android:textAlignment="inherit" />
+
+            <Button
+                android:id="@+id/button_add"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/idEdtPassword"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:text="Add"
+                android:textAllCaps="false" />
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <Button
+        android:id="@+id/button_back"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="4dp"
+        android:text="Back"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
