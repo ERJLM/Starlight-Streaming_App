@@ -16,7 +16,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.media3.common.MediaItem;
 
 
+import androidx.media3.common.PlaybackException;
+import androidx.media3.common.Player;
 import androidx.media3.common.util.UnstableApi;
+import androidx.media3.exoplayer.ExoPlaybackException;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.ui.PlayerView;
 
@@ -39,6 +42,8 @@ public class PlayerActivity extends AppCompatActivity {
     private Movie movie;
     private static boolean[] check = new boolean[1];
 
+    private static MyDialogFragment loadingDialog;
+
 
 
 
@@ -50,6 +55,7 @@ public class PlayerActivity extends AppCompatActivity {
         user = (User)getIntent().getSerializableExtra("user");
         Log.w("USEROLL", String.valueOf(user));
         movie = (Movie)getIntent().getSerializableExtra("movie");
+        loadingDialog = new MyDialogFragment();
         if(movie.isSeeded() || user.getSeeder() > 0) button_download.setVisibility(View.GONE);
 
 
@@ -98,7 +104,8 @@ public class PlayerActivity extends AppCompatActivity {
             }
         });
 
-
+        //Start loading
+        loadingDialog.show(getSupportFragmentManager(), "dialog");
 
         initializePlayer();
         Log.d("MyApp", "Activity created");
@@ -164,6 +171,27 @@ public class PlayerActivity extends AppCompatActivity {
     private void initializePlayer() {
         PlayerView playerView = findViewById(R.id.playerView);
         player = new ExoPlayer.Builder(PlayerActivity.this).build();
+        player.addListener(new ExoPlayer.Listener() {
+            @Override
+            public void onIsPlayingChanged(boolean isPlaying) {
+                if (isPlaying) {
+                    if (loadingDialog != null && loadingDialog.isVisible()) {
+                        loadingDialog.dismiss();
+                    }
+                }
+            }
+            @Override
+            public void onPlayerError(PlaybackException error) {
+                Log.d("EKinox", "Erro apanhado: " + error.getMessage());
+
+                //Show loading screen
+                if (loadingDialog != null && !loadingDialog.isVisible()) {
+                    loadingDialog.show(getSupportFragmentManager(), "dialog");
+                }
+
+                getMovieFromServer();
+            }
+        });
 
 
         playerView.setPlayer(player);
@@ -171,7 +199,51 @@ public class PlayerActivity extends AppCompatActivity {
         player.setMediaItem(mediaItem);
         player.prepare();
         player.setPlayWhenReady(true);
+
     }
+
+    private void getMovieFromServer() {
+        Call<Movie> call = RetrofitClient.getMovieApi().get_movie_from_server(movie.getId());
+        call.enqueue(new Callback<Movie>() {
+            @Override
+            public void onResponse(Call<Movie> call, Response<Movie> response) {
+                if (response.isSuccessful()) {
+                    Movie res = response.body();
+                    // Do something with the list of users...
+                    if (res != null) {
+                        // Update the adapter with the new list of users
+                        //userAdapter.setLogin(login);
+                        getResponseMovie(res);
+
+                    }
+                } else {
+                    Intent intent = new Intent(PlayerActivity.this, ErrorActivity.class);
+                    startActivity(intent);
+                    Log.e("RequestLogin", "else");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Movie> call, Throwable t) {
+                t.toString();
+                Intent intent = new Intent(PlayerActivity.this, ErrorActivity.class);
+                startActivity(intent);
+                Log.e("RequestLogin", t.toString());
+            }
+        });
+    }
+
+    private void getResponseMovie(Movie res) {
+        movie = res;
+        videoUrl = movie.getStreamingLink();
+        Log.w("myLink22", videoUrl);
+        if (loadingDialog != null && loadingDialog.isVisible()) {
+            loadingDialog.dismiss();
+        }
+        initializePlayer();
+        Log.d("MyApp", "Activity created");
+    }
+
 
     public void showNetflix(View view) {
         Toast toast = Toast.makeText(this, "Welcome to Starlight",

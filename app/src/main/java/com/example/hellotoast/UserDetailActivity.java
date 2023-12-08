@@ -31,7 +31,6 @@ public class UserDetailActivity extends AppCompatActivity {
         // Find TextViews and Button by their IDs
         TextView textViewTitle = findViewById(R.id.textUserName);
         TextView textViewId = findViewById(R.id.textViewId);
-        TextView textViewIp = findViewById(R.id.textViewIp);
         TextView textViewName = findViewById(R.id.textViewName);
         TextView textViewAdmin = findViewById(R.id.textViewAdmin);
         TextView textViewSeeder = findViewById(R.id.textViewSeeder);
@@ -44,8 +43,7 @@ public class UserDetailActivity extends AppCompatActivity {
             textViewId.setText(String.format("Id: %s", userInfo.getId()));
             textViewName.setText(String.format("Name: %s", userInfo.getName()));
             textViewAdmin.setText(String.format("Admin: %s", userInfo.isAdmin() ? "Yes" : "No"));
-            textViewIp.setText(String.format("Ip: %s",  userInfo.getIp() != null ? userInfo.getIp() : "Null"));
-            textViewSeeder.setText(String.format("Seeder: %s", userInfo.getSeeder()));
+            textViewSeeder.setText(String.format("Seeding movie with id: %s", userInfo.getSeeder()));
         }
 
         //Delete User

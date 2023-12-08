@@ -69,14 +69,6 @@
                 android:textSize="18sp" />
 
             <TextView
-                android:id="@+id/textViewIp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Ip: "
-                android:textColor="@color/white"
-                android:textSize="18sp" />
-
-            <TextView
                 android:id="@+id/textViewSeeder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

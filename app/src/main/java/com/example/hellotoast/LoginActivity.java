@@ -158,8 +158,9 @@ public class LoginActivity extends AppCompatActivity {
 
     private void getResponse(Login_Request login) {
         //userAdapter.setLogin(login);
-        User user = login.getUser();
+        user = login.getUser();
         user.setIp(ip);
+        Log.d("EKINOX", user.getIp());
         // Validate user inputs
         if (!login.isValid()) {
             // Login failed, display error message

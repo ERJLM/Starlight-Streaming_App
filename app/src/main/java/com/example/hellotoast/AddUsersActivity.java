@@ -41,7 +41,9 @@ public class AddUsersActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!edtUserName.getText().toString().trim().equals("") && !edtPassword.getText().toString().trim().equals("")) requestAddUser();
+                if(!edtUserName.getText().toString().trim().equals("") && !edtPassword.getText().toString().trim().equals("")){
+                    requestAddUser();
+                }
                 else Toast.makeText(AddUsersActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
             }
         });
@@ -65,6 +67,9 @@ public class AddUsersActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<addUser_Request> call, Response<addUser_Request> response) {
                 if (response.isSuccessful()) {
+                    edtUserName.setText("");
+                    edtPassword.setText("");
+                    checkBoxAdmin.setChecked(false);
                     addUser_Request result = response.body();
                     // Do something with the list of users...
                     if (result != null) {
@@ -79,6 +84,7 @@ public class AddUsersActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<addUser_Request> call, Throwable t) {
                 t.toString();
+                Toast.makeText(AddUsersActivity.this, "User couldn't be added", Toast.LENGTH_SHORT).show();
                 Log.e("RequestAdUser", t.toString());
             }
         });

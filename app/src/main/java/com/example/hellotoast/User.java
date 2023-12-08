@@ -15,6 +15,8 @@ public class User implements Serializable {
     private String network_address;
     @SerializedName("manager")
     private boolean manager;
+
+    //Id of the movie that the user is seeding
     @SerializedName("seeder")
     private int seeder;
 
