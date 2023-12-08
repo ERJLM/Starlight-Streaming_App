@@ -41,7 +41,8 @@ public class AddUsersActivity extends AppCompatActivity {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestAddUser();
+                if(!edtUserName.getText().toString().trim().equals("") && !edtPassword.getText().toString().trim().equals("")) requestAddUser();
+                else Toast.makeText(AddUsersActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
             }
         });
 

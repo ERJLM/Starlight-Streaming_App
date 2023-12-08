@@ -36,6 +36,9 @@
             android:name=".UserDetailActivity"
             android:exported="false"/>
         <activity
+            android:name=".ErrorActivity"
+            android:exported="false"/>
+        <activity
             android:name=".MovieDetailActivity"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             android:exported="false"/>

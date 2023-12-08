@@ -138,14 +138,12 @@ class Seed_Request{
 
 class Login_Request {
      Boolean valid;
-     Boolean admin;
-     int id;
+     User user;
 
 
     Login_Request(Boolean valid, Boolean admin, int id) {
         this.valid = valid;
-        this.admin = admin;
-        this.id = id;
+        this.user = user;
     }
 
     public boolean isValid() {
@@ -153,13 +151,8 @@ class Login_Request {
     }
 
 
-    public boolean isAdmin() {
-        return admin;
-    }
-
-
-    public int getId() {
-        return id;
+    public User getUser() {
+        return user;
     }
 }
 

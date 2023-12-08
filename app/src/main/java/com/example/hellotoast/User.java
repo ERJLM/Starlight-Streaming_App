@@ -27,6 +27,15 @@ public class User implements Serializable {
         this.seeder = 0;
     }
 
+    public User(int id, String name, String password, boolean manager, String network_address, int seeder){
+        this.id = id;
+        this.username = name;
+        this.password = password;
+        this.manager = manager;
+        this.network_address = network_address;
+        this.seeder = seeder;
+    }
+
     public User(int id, String name, String password, boolean manager){
         this.id = id;
         this.username = name;
@@ -34,6 +43,15 @@ public class User implements Serializable {
         this.manager = manager;
         this.network_address = null;
         this.seeder = 0;
+    }
+
+    public User(int id, String name, String password, boolean manager, int seeder){
+        this.id = id;
+        this.username = name;
+        this.password = password;
+        this.manager = manager;
+        this.network_address = null;
+        this.seeder = seeder;
     }
 
     public String getName() {

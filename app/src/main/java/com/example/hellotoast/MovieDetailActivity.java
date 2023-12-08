@@ -19,6 +19,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import retrofit2.Call;
@@ -124,13 +125,13 @@ public class MovieDetailActivity extends AppCompatActivity {
     void iniViews(Movie movie) {
         String movieTitle = movie.getTitle();
         //int imageResourceId = movie.getThumbnail();
-        int imagecover = movie.getCoverPhoto();
+        int imagecover = R.drawable.stars;
         //MovieThumbnailImg = findViewById(R.id.detail_movie_img);
        // Glide.with(this).load(imageResourceId).into(MovieThumbnailImg);
         //MovieThumbnailImg.setImageResource(imageResourceId);
         MovieCoverImg = findViewById(R.id.detail_movie_cover);
-        //MovieCoverImg.setImageAlpha(getDrawable(@drawable));
-        //Glide.with(this).load(imagecover).into(MovieCoverImg);
+        //MovieCoverImg.setImageAlpha(getDrawable(@drawable/stars.jpg));
+        Glide.with(this).load(imagecover).into(MovieCoverImg);
         tv_title = findViewById(R.id.detail_movie_title);
         tv_title.setText(movieTitle);
         getSupportActionBar().setTitle(movieTitle);

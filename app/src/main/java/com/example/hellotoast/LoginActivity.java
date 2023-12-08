@@ -54,6 +54,7 @@ public class LoginActivity extends AppCompatActivity {
     private LinearLayout linearLayout;
     private Intent intentAdmin;
     private MyDialogFragment loadingDialog;
+    private static String ip;
 
 
 
@@ -92,7 +93,7 @@ public class LoginActivity extends AppCompatActivity {
                  username = userNameEdt.getText().toString();
                  password = passwordEdt.getText().toString();
                 WifiManager wm = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
-                String ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
+                ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
                 Log.w("RequestLoginIp",ip);
 
 
@@ -128,7 +129,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<Login_Request> call, Response<Login_Request> response) {
                 //hideLoadingDialog();
                 if (response.isSuccessful()) {
-                    //loadingProgressBar.setVisibility(View.INVISIBLE);
+
                     hideLoadingDialog();
                     Login_Request login = response.body();
                     // Do something with the list of users...
@@ -136,7 +137,7 @@ public class LoginActivity extends AppCompatActivity {
                         // Update the adapter with the new list of users
                         //userAdapter.setLogin(login);
                         getResponse(login);
-                        Log.d("RequestLoginBool ", String.valueOf(login.isAdmin()));
+                        Log.d("RequestLoginBool ", String.valueOf(login.isValid()));
                         Log.d("RequestLoginBool2 ", login.toString());
                     }
                 } else {
@@ -147,23 +148,25 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Login_Request> call, Throwable t) {
                 t.toString();
-                hideLoadingDialog();
+                //hideLoadingDialog();
                 Log.e("RequestLogin", t.toString());
+                Intent intent = new Intent(LoginActivity.this, ErrorActivity.class);
+                startActivity(intent);
             }
         });
     }
 
     private void getResponse(Login_Request login) {
         //userAdapter.setLogin(login);
-        userLogin = login;
-        User user = new User(userLogin.getId(),username, password, userLogin.isAdmin());
+        User user = login.getUser();
+        user.setIp(ip);
         // Validate user inputs
-        if (!userLogin.isValid()) {
+        if (!login.isValid()) {
             // Login failed, display error message
             Toast.makeText(LoginActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
         }
         // Simulate login process (without using Parse SDK)
-        else if (userLogin.isAdmin()) {
+        else if (user.isAdmin()) {
             //Admin Login successful, switch to MainActivity
             Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
@@ -171,7 +174,7 @@ public class LoginActivity extends AppCompatActivity {
             intentAdmin.putExtra("user", user);
             Log.d("UOLEE", "step0");
             startActivity(intentAdmin);
-        } else if(!userLogin.isAdmin()) {
+        } else if(!user.isAdmin()) {
             // UserLogin successful, switch to MainActivity
             Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
 
@@ -183,7 +186,7 @@ public class LoginActivity extends AppCompatActivity {
             // Login is empty
             Toast.makeText(LoginActivity.this, "Please enter a username and password", Toast.LENGTH_SHORT).show();
         }
-        Log.d("RequestLoginBool ", String.valueOf(userLogin.isAdmin()));
+        Log.d("RequestLoginBool ", String.valueOf(user.isAdmin()));
     }
 
     private void startWebServer() {

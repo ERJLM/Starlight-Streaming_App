@@ -150,7 +150,8 @@ public class AndroidWebServer extends NanoHTTPD implements Serializable {
                     String fileHash = h.getHash();
                     //if(fileHash == null) Log.i(TAG, "Hash é nula");
                     SHAMap.put(name, fileHash);
-                    Log.e(TAG, fileHash);
+                    Log.d(TAG, fileHash);
+                    Log.d(TAG, filename);
                     //Log.w("ExpectedHashForChunk", expectedHash[0]);
                 }
 

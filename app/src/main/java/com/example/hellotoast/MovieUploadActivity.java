@@ -96,9 +96,12 @@ public class MovieUploadActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 movieName = movie_nameEdt.getText().toString();
-                launcher.launch(new PickVisualMediaRequest.Builder()
-                        .setMediaType(ActivityResultContracts.PickVisualMedia.VideoOnly.INSTANCE)
-                        .build());
+                if(!movieName.trim().equals("")) {
+                    launcher.launch(new PickVisualMediaRequest.Builder()
+                            .setMediaType(ActivityResultContracts.PickVisualMedia.VideoOnly.INSTANCE)
+                            .build());
+                }
+                else Toast.makeText(MovieUploadActivity.this, "Insert a valid name for the movie", Toast.LENGTH_SHORT).show();
 
             }
         });
