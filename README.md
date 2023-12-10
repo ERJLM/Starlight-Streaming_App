@@ -27,4 +27,4 @@ servidor (Tomcat) com uma servlet na porta 6666 da VM2 (34.39.11.61) na Cloud, r
 base de dados SQL na VM1 com 3 tabelas (user_tbl, movie_tbl e chunk_tbl).
 
  
-###### todos os módulos foram compilados com o Maven.
+###### Todos os módulos foram compilados com o Maven.
