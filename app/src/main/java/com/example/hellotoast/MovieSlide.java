@@ -1,13 +1,13 @@
 package com.example.hellotoast;
 
-public class Slide {
+public class MovieSlide {
 
     private int Image ;
     private String Title;
     // Add more field depand on whay you wa&nt ...
 
 
-    public Slide(int image, String title) {
+    public MovieSlide(int image, String title) {
         Image = image;
         Title = title;
     }

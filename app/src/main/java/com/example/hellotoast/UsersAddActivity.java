@@ -15,7 +15,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AddUsersActivity extends AppCompatActivity {
+public class UsersAddActivity extends AppCompatActivity {
 
     private EditText edtUserName, edtPassword;
     private CheckBox checkBoxAdmin;
@@ -44,7 +44,7 @@ public class AddUsersActivity extends AppCompatActivity {
                 if(!edtUserName.getText().toString().trim().equals("") && !edtPassword.getText().toString().trim().equals("")){
                     requestAddUser();
                 }
-                else Toast.makeText(AddUsersActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
+                else Toast.makeText(UsersAddActivity.this, "Invalid username or password", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -53,7 +53,7 @@ public class AddUsersActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Intent to start CMSActivity
-                Intent intent = new Intent(AddUsersActivity.this, ManageUsersActivity.class);
+                Intent intent = new Intent(UsersAddActivity.this, UsersManageActivity.class);
                 intent.putExtra("user", user);
                 startActivity(intent);
             }
@@ -84,7 +84,7 @@ public class AddUsersActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<addUser_Request> call, Throwable t) {
                 t.toString();
-                Toast.makeText(AddUsersActivity.this, "User couldn't be added", Toast.LENGTH_SHORT).show();
+                Toast.makeText(UsersAddActivity.this, "User couldn't be added", Toast.LENGTH_SHORT).show();
                 Log.e("RequestAdUser", t.toString());
             }
         });

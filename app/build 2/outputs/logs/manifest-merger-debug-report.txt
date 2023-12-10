@@ -172,7 +172,7 @@ MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/eliandromelo/.gradle
 		ADDED from /Users/eliandromelo/Desktop/AndroidStudioProjects/HelloToast/app/src/main/AndroidManifest.xml:22:9-69
 	android:dataExtractionRules
 		ADDED from /Users/eliandromelo/Desktop/AndroidStudioProjects/HelloToast/app/src/main/AndroidManifest.xml:24:9-65
-activity#com.example.hellotoast.PlayerActivity
+activity#com.example.hellotoast.MoviePlayerActivity
 ADDED from /Users/eliandromelo/Desktop/AndroidStudioProjects/HelloToast/app/src/main/AndroidManifest.xml:32:9-40:20
 	android:exported
 		ADDED from /Users/eliandromelo/Desktop/AndroidStudioProjects/HelloToast/app/src/main/AndroidManifest.xml:34:13-36

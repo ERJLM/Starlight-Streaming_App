@@ -98,7 +98,7 @@
 50-->/Users/eliandromelo/Desktop/AndroidStudioProjects/HelloToast/app/src/main/AndroidManifest.xml:30:9-48
 51        <activity
 51-->/Users/eliandromelo/Desktop/AndroidStudioProjects/HelloToast/app/src/main/AndroidManifest.xml:32:9-40:20
-52            android:name="com.example.hellotoast.PlayerActivity"
+52            android:name="com.example.hellotoast.MoviePlayerActivity"
 52-->/Users/eliandromelo/Desktop/AndroidStudioProjects/HelloToast/app/src/main/AndroidManifest.xml:33:13-41
 53            android:exported="true" >
 53-->/Users/eliandromelo/Desktop/AndroidStudioProjects/HelloToast/app/src/main/AndroidManifest.xml:34:13-36

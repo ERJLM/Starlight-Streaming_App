@@ -55,21 +55,14 @@ public class MovieDetailActivity extends AppCompatActivity {
         button_delete = findViewById(R.id.button_delete);
         user = (User)getIntent().getSerializableExtra("user");
         movie = (Movie)getIntent().getSerializableExtra("movie");
-        Log.i("Herioo Movie", String.valueOf(movie.getId()));
-        //check[0] = false;
-        //check[0] = true;
-        requestMovie();
-        Log.i("Herioo Movie", String.valueOf(check[0]));
-        //while(!check[0]);
-        Log.i("HeriooMovieAfterrequest", String.valueOf(movie.getId()));
-       // server = (AndroidWebServer)getIntent().getSerializableExtra("server");
+
 
         // Set click listener for login button
         play_fab.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
             @Override
             public void onClick(View v) {
-                @SuppressLint("UnsafeOptInUsageError") Intent intent = new Intent(MovieDetailActivity.this, PlayerActivity.class);
+                @SuppressLint("UnsafeOptInUsageError") Intent intent = new Intent(MovieDetailActivity.this, MoviePlayerActivity.class);
                 intent.putExtra("movie",movie);
                 intent.putExtra("user", user);
                 startActivity(intent);
@@ -124,20 +117,14 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     void iniViews(Movie movie) {
         String movieTitle = movie.getTitle();
-        //int imageResourceId = movie.getThumbnail();
         int imagecover = R.drawable.stars;
-        //MovieThumbnailImg = findViewById(R.id.detail_movie_img);
-       // Glide.with(this).load(imageResourceId).into(MovieThumbnailImg);
-        //MovieThumbnailImg.setImageResource(imageResourceId);
         MovieCoverImg = findViewById(R.id.detail_movie_cover);
-        //MovieCoverImg.setImageAlpha(getDrawable(@drawable/stars.jpg));
         Glide.with(this).load(imagecover).into(MovieCoverImg);
         tv_title = findViewById(R.id.detail_movie_title);
         tv_title.setText(movieTitle);
         getSupportActionBar().setTitle(movieTitle);
         tv_description = findViewById(R.id.detail_movie_desc);
         tv_description.setText(movieTitle);
-        // setup animation
         MovieCoverImg.setAnimation(AnimationUtils.loadAnimation(this,R.anim.scale_animation));
         play_fab.setAnimation(AnimationUtils.loadAnimation(this,R.anim.scale_animation));
 

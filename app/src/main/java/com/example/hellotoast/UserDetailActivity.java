@@ -43,7 +43,9 @@ public class UserDetailActivity extends AppCompatActivity {
             textViewId.setText(String.format("Id: %s", userInfo.getId()));
             textViewName.setText(String.format("Name: %s", userInfo.getName()));
             textViewAdmin.setText(String.format("Admin: %s", userInfo.isAdmin() ? "Yes" : "No"));
-            textViewSeeder.setText(String.format("Seeding movie with id: %s", userInfo.getSeeder()));
+            int i =  userInfo.getSeeder();
+            if (i > 0) textViewSeeder.setText(String.format("Seeding movie with id %s", i));
+            else textViewSeeder.setText(String.format("%s is not seeding a movie", userInfo.getName()));
         }
 
         //Delete User
@@ -78,7 +80,7 @@ public class UserDetailActivity extends AppCompatActivity {
         });
 
         button_back.setOnClickListener(view -> {
-            Intent intent = new Intent(UserDetailActivity.this, ManageUsersActivity.class);
+            Intent intent = new Intent(UserDetailActivity.this, UsersManageActivity.class);
             intent.putExtra("user", user);
             startActivity(intent);
         });

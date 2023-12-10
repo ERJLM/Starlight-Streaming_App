@@ -40,7 +40,7 @@ public class CMSActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Intent to start ManageUsersActivity
-                Intent intent = new Intent(CMSActivity.this, ManageUsersActivity.class);
+                Intent intent = new Intent(CMSActivity.this, UsersManageActivity.class);
                 intent.putExtra("user", user);
                 startActivity(intent);
             }

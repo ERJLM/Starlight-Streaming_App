@@ -17,9 +17,7 @@ import androidx.media3.common.MediaItem;
 
 
 import androidx.media3.common.PlaybackException;
-import androidx.media3.common.Player;
 import androidx.media3.common.util.UnstableApi;
-import androidx.media3.exoplayer.ExoPlaybackException;
 import androidx.media3.exoplayer.ExoPlayer;
 import androidx.media3.ui.PlayerView;
 
@@ -29,7 +27,7 @@ import retrofit2.Response;
 
 @UnstableApi
 @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
-public class PlayerActivity extends AppCompatActivity {
+public class MoviePlayerActivity extends AppCompatActivity {
     private ExoPlayer player;
     //AppServer appServer;
     String videoUrl ;
@@ -60,20 +58,20 @@ public class PlayerActivity extends AppCompatActivity {
 
 
         videoUrl = movie.getStreamingLink();
-        Log.w("myLink22", videoUrl);
+
 
         if (videoUrl.contains(":8080")){
-            Log.w("USEROLL", "YES1122");
+            Log.w("MOVIESEED", "YES1122");
             assert AndroidWebServer.getInstance() != null;
-            Log.i("HERIOO ENTROU no Player", String.valueOf(movie.getId()));
+            Log.i("MOVIESEED", String.valueOf(movie.getId()));
             AndroidWebServer.getInstance().setMovie_info(movie.getId(), movie.getStreamingLink());
             videoUrl = "http://localhost:8080/playlist.m3u8";
         }
-        Log.w("myLink22", videoUrl);
+        Log.w("MOVIELINK", videoUrl);
         button_download.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(PlayerActivity.this);
+                AlertDialog.Builder builder = new AlertDialog.Builder(MoviePlayerActivity.this);
                 builder.setTitle("Confirmation");
                 builder.setMessage("Are you sure you want to be the seeder of this movie?");
 
@@ -125,7 +123,7 @@ public class PlayerActivity extends AppCompatActivity {
                         num_of_chunks = result.getNum_of_chunks();
                         confirm = result.isConfirm();
                         Log.w("RequestSeed", "Response was a Success");
-                        Log.w("RequestSeedRes", download_link + "___" + num_of_chunks + "___" + confirm);
+                        Log.w("RequestSeed INFO: ", "LINK:" + download_link + "__Num of chunks" + num_of_chunks + "__is valid? " + confirm);
                         getResponse(download_link, num_of_chunks, confirm);
                     }
                 } else {
@@ -136,7 +134,7 @@ public class PlayerActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Seed_Request> call, Throwable t) {
                 t.toString();
-                Log.e("RequestSeed", t.toString());
+                Log.e("RequestSeed Fail", t.toString());
             }
         });
     }
@@ -146,13 +144,13 @@ public class PlayerActivity extends AppCompatActivity {
         if(confirm) {
             user.setSeeder(movie.getId());
             for (int i = 0; i < num_of_chunks; i++) {
-                String title = "data" + String.format("%03d", i) + ".ts";
+                String title = "RequestSeed getResponse" + String.format("%03d", i) + ".ts";
                 String chunkUrl = download_link + "/" + title;
-                String localFilePath = VideoDownloadManager.downloadVideo(PlayerActivity.this, chunkUrl, title );
-                Log.w("RequestSeed", "chunk " + i + "downloaded with url: " + chunkUrl);
+                String localFilePath = MovieDownloadManager.downloadVideo(MoviePlayerActivity.this, chunkUrl, title );
+                Log.w("RequestSeed getResponse", "chunk " + i + "downloaded with url: " + chunkUrl);
             }
             String movieUrl = download_link + "/playlist.m3u8";
-            VideoDownloadManager.downloadVideo(PlayerActivity.this, movieUrl, "playlist.m3u8");
+            MovieDownloadManager.downloadVideo(MoviePlayerActivity.this, movieUrl, "playlist.m3u8");
             Toast.makeText(this, "Movie was downloaded", Toast.LENGTH_SHORT).show();
             button_download.setVisibility(View.GONE);
         }
@@ -170,7 +168,7 @@ public class PlayerActivity extends AppCompatActivity {
     }
     private void initializePlayer() {
         PlayerView playerView = findViewById(R.id.playerView);
-        player = new ExoPlayer.Builder(PlayerActivity.this).build();
+        player = new ExoPlayer.Builder(MoviePlayerActivity.this).build();
         player.addListener(new ExoPlayer.Listener() {
             @Override
             public void onIsPlayingChanged(boolean isPlaying) {
@@ -182,7 +180,7 @@ public class PlayerActivity extends AppCompatActivity {
             }
             @Override
             public void onPlayerError(PlaybackException error) {
-                Log.d("EKinox", "Erro apanhado: " + error.getMessage());
+                Log.d("ONPLAYERERROR", "Erro apanhado: " + error.getMessage());
 
                 //Show loading screen
                 if (loadingDialog != null && !loadingDialog.isVisible()) {
@@ -217,7 +215,7 @@ public class PlayerActivity extends AppCompatActivity {
 
                     }
                 } else {
-                    Intent intent = new Intent(PlayerActivity.this, ErrorActivity.class);
+                    Intent intent = new Intent(MoviePlayerActivity.this, ErrorActivity.class);
                     startActivity(intent);
                     Log.e("RequestLogin", "else");
                 }
@@ -226,7 +224,7 @@ public class PlayerActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<Movie> call, Throwable t) {
                 t.toString();
-                Intent intent = new Intent(PlayerActivity.this, ErrorActivity.class);
+                Intent intent = new Intent(MoviePlayerActivity.this, ErrorActivity.class);
                 startActivity(intent);
                 Log.e("RequestLogin", t.toString());
             }
@@ -236,12 +234,11 @@ public class PlayerActivity extends AppCompatActivity {
     private void getResponseMovie(Movie res) {
         movie = res;
         videoUrl = movie.getStreamingLink();
-        Log.w("myLink22", videoUrl);
         if (loadingDialog != null && loadingDialog.isVisible()) {
             loadingDialog.dismiss();
         }
+        Log.d("REQUESTMOVIESERVER", "Video pedido ao servidor");
         initializePlayer();
-        Log.d("MyApp", "Activity created");
     }
 
 
@@ -252,7 +249,7 @@ public class PlayerActivity extends AppCompatActivity {
     }
 
     public void back(View view) {
-        Intent intent = new Intent(PlayerActivity.this, MovieDetailActivity.class);
+        Intent intent = new Intent(MoviePlayerActivity.this, MovieDetailActivity.class);
         intent.putExtra("movie",movie);
         intent.putExtra("user", user);
         startActivity(intent);

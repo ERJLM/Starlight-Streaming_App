@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/stars"
     android:orientation="vertical"
-    tools:context=".ManageUsersActivity">
+    tools:context=".UsersManageActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="372dp"

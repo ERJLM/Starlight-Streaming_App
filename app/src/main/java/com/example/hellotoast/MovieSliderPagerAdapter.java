@@ -14,13 +14,13 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import java.util.List;
 
-public class SliderPagerAdapter extends PagerAdapter {
+public class MovieSliderPagerAdapter extends PagerAdapter {
 
     private Context mContext ;
-    private List<Slide> mList ;
+    private List<MovieSlide> mList ;
 
 
-    public SliderPagerAdapter(Context mContext, List<Slide> mList) {
+    public MovieSliderPagerAdapter(Context mContext, List<MovieSlide> mList) {
         this.mContext = mContext;
         this.mList = mList;
     }

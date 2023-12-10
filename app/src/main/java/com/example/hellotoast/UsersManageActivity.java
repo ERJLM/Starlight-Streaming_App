@@ -19,7 +19,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ManageUsersActivity extends AppCompatActivity {
+public class UsersManageActivity extends AppCompatActivity {
 
     private EditText edtUserName, edtPassword;
     private CheckBox checkBoxAdmin;
@@ -45,10 +45,10 @@ public class ManageUsersActivity extends AppCompatActivity {
             @Override
             public void onItemClick(User userInfo) {
                 // Show user details
-                Intent intent = new Intent(ManageUsersActivity.this, UserDetailActivity.class);
+                Intent intent = new Intent(UsersManageActivity.this, UserDetailActivity.class);
                 intent.putExtra("userInfo", userInfo);
                 intent.putExtra("user", user);
-                Toast.makeText(ManageUsersActivity.this, "Clicked: " + userInfo.getName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(UsersManageActivity.this, "Clicked: " + userInfo.getName(), Toast.LENGTH_SHORT).show();
                 startActivity(intent);
             }
         });
@@ -78,7 +78,7 @@ public class ManageUsersActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Intent to start CMSActivity
-                Intent intent = new Intent(ManageUsersActivity.this, CMSActivity.class);
+                Intent intent = new Intent(UsersManageActivity.this, CMSActivity.class);
                 intent.putExtra("user", user);
                 startActivity(intent);
             }
@@ -111,7 +111,7 @@ public class ManageUsersActivity extends AppCompatActivity {
 
     private void addUserToDatabase() {
         //Go to the AddUsersActivity
-        Intent intent = new Intent(ManageUsersActivity.this, AddUsersActivity.class);
+        Intent intent = new Intent(UsersManageActivity.this, UsersAddActivity.class);
         intent.putExtra("user", user);
         startActivity(intent);
         //Toast.makeText(this, "User added to the database", Toast.LENGTH_SHORT).show();

@@ -34,7 +34,7 @@ import retrofit2.Response;
 public class MovieSelectorActivity extends AppCompatActivity implements MovieItemClickListener {
 
 
-    private List<Slide> lstSlides;
+    private List<MovieSlide> lstMovieSlides;
     private ViewPager sliderpager;
     private TabLayout indicator;
     private RecyclerView MoviesRV;
@@ -86,14 +86,14 @@ public class MovieSelectorActivity extends AppCompatActivity implements MovieIte
 
 
         // Prepare list of slides
-        lstSlides = new ArrayList<>();
-        lstSlides.add(new Slide(R.drawable.popeye_40thieves, "Popeye the Sailor Meets Ali Baba's Forty Thieves"));
-        lstSlides.add(new Slide(R.drawable.the_letter1, "The Letter"));
-        lstSlides.add(new Slide(R.drawable.cc_vagabond, "Charlie Chaplin’s ”The Vagabond”"));
-        lstSlides.add(new Slide(R.drawable.notld, "Night of the Living Dead"));
+        lstMovieSlides = new ArrayList<>();
+        lstMovieSlides.add(new MovieSlide(R.drawable.popeye_40thieves, "Popeye the Sailor Meets Ali Baba's Forty Thieves"));
+        lstMovieSlides.add(new MovieSlide(R.drawable.the_letter1, "The Letter"));
+        lstMovieSlides.add(new MovieSlide(R.drawable.cc_vagabond, "Charlie Chaplin’s ”The Vagabond”"));
+        lstMovieSlides.add(new MovieSlide(R.drawable.notld, "Night of the Living Dead"));
 
-        // Create and set SliderPagerAdapter
-        SliderPagerAdapter adapter = new SliderPagerAdapter(this, lstSlides);
+        // Create and set MovieSliderPagerAdapter
+        MovieSliderPagerAdapter adapter = new MovieSliderPagerAdapter(this, lstMovieSlides);
         sliderpager.setAdapter(adapter);
 
         // Setup timer for automatic slide transitions
@@ -119,13 +119,6 @@ public class MovieSelectorActivity extends AppCompatActivity implements MovieIte
         requestMovies();
 
         Log.w("RequestMovies", "Movies: " + movieAdapter.getMovies().toString());
-
-        //lstMovies.add(new Movie(0,"Moana",  videourl));
-        //lstMovies.add(new Movie(0,"Black Panther",  videourl));
-        //lstMovies.add(new Movie(0,"The Martian",  videourl));
-        //lstMovies.add(new Movie(0,"The Martian", videourl));
-        //lstMovies.add(new Movie(0,"The Martian", videourl));
-        //lstMovies.add(new Movie(0,"The Martian", videourl));
 
         // Set RecyclerView layout manager
         MoviesRV.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
@@ -154,7 +147,7 @@ public class MovieSelectorActivity extends AppCompatActivity implements MovieIte
 
     }
 
-        //Slider timer for the slider that shows movies
+        //Slider timer for the slider that shows movies at the top of the activity
         class SliderTimer extends TimerTask {
 
 
@@ -164,7 +157,7 @@ public class MovieSelectorActivity extends AppCompatActivity implements MovieIte
                 MovieSelectorActivity.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        if (sliderpager.getCurrentItem() < lstSlides.size() - 1) {
+                        if (sliderpager.getCurrentItem() < lstMovieSlides.size() - 1) {
                             sliderpager.setCurrentItem(sliderpager.getCurrentItem() + 1);
                         } else
                             sliderpager.setCurrentItem(0);

@@ -8,12 +8,12 @@ import android.util.Log;
 
 import java.io.File;
 
-public class VideoDownloadManager {
+public class MovieDownloadManager {
 
     public static String downloadVideo(Context context, String videoUrl, String title) {
-        Log.d("Httpd", "Attempting to download video");
+        Log.d("MOVIEDOWNLOADMANAGER", "Attempting to download video");
         DownloadManager.Request request = new DownloadManager.Request(Uri.parse(videoUrl));
-        Log.d("Httpd", "Request made");
+        Log.d("MOVIEDOWNLOADMANAGER", "Request made");
         request.setTitle(title);
         request.setDescription("Downloading video");
         request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
@@ -21,7 +21,7 @@ public class VideoDownloadManager {
         // Set the destination path for the downloaded video
         String path = "/sdcard/Download/video/" + title;
         deleteFile(path);
-        Log.d("Herioo Path DownloadMan", path);
+        Log.d("MOVIEDOWNLOADMANAGER", path);
         request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "/video/" + title);
 
         DownloadManager downloadManager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);

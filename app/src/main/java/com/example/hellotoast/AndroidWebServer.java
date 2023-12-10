@@ -86,24 +86,22 @@ public class AndroidWebServer extends NanoHTTPD implements Serializable {
         }
         else {
             try {
-                Log.i("HERIOO SERA Q ENTROU", "step0");
+                Log.i("AWS SERA Q ENTROU", "step0");
                 URL url = new URL(movie_url.replace("/playlist.m3u8", "/server")  + uri);
-                Log.i("Herioo movieUrl", movie_url.replace("/playlist.m3u8", "/server")  + uri);
-                Log.i("HERIOO My URI", "http://localhost:8080/server" + uri);
-                Log.i("HERIOO SERA Q ENTROU", "step1");
+                Log.i("AWS movieUrl", movie_url.replace("/playlist.m3u8", "/server")  + uri);
+                Log.i("AWS My URI", "http://localhost:8080/server" + uri);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                Log.i("HERIOO SERA Q ENTROU", "step2");
+
                 connection.setRequestMethod("GET");
-                Log.i("HERIOO SERA Q ENTROU", "step3");
 
                 int responseCode = connection.getResponseCode();
-                Log.i("HERIOO SERA Q ENTROU", "HERR");
+                Log.i("AWS SERA Q ENTROU", "Before Response");
                 if(responseCode == HttpURLConnection.HTTP_OK){
                     String filename =  uri.substring(uri.lastIndexOf('/')+1);
-                    Log.i("HERIOO ENTROU", "HERR");
+                    Log.i("AWS ENTROU", "Response OK");
                     check[0] = false;
-                    Log.i("HERIOO ENTROU Android", String.valueOf(movie_id));
-                    Log.i("HERIOO ENTROU Android2", movie_url);
+                    Log.i("AWS ENTROU MovieId", String.valueOf(movie_id));
+                    Log.i("AWS ENTROU MovieUrl", movie_url);
                     InputStream inStream =connection.getInputStream();
                     File file = new File("/sdcard/Download" + uri);
                     FileUtils.copyInputStreamToFile(inStream, file);
@@ -121,7 +119,7 @@ public class AndroidWebServer extends NanoHTTPD implements Serializable {
                 }
 
             } catch (Exception e) {
-                Log.d("HERIOO3rror", e.toString());
+                Log.d("AWS ERROR", e.toString());
                 throw new RuntimeException(e);
             }
 
@@ -137,30 +135,31 @@ public class AndroidWebServer extends NanoHTTPD implements Serializable {
 
     private void requestListHash(int id, String filename) {
         Call<List<Hash>> call =RetrofitClient.getMovieApi().get_hashes(id, filename);
-        String TAG = "RequestFileHash";
-        Log.d(TAG, "HASHSHSH");
-        Log.i(TAG, String.valueOf(id));
+        String TAG = "RequestListHash";
+        Log.d(TAG, "Entered Request");
+
         try {
             retrofit2.Response<List<Hash>> response = call.execute();
 
             if (response.isSuccessful()) {
                 assert response.body() != null;
+                Log.d(TAG, "Response was successful");
                 for (Hash h : response.body()) {
                     String name = h.getFilename();
                     String fileHash = h.getHash();
-                    //if(fileHash == null) Log.i(TAG, "Hash é nula");
+                    if(fileHash.trim() == null) Log.i(TAG, "Hash é nula");
                     SHAMap.put(name, fileHash);
-                    Log.d(TAG, fileHash);
-                    Log.d(TAG, filename);
+                    Log.d(TAG + "hash", fileHash);
+                    Log.d(TAG + "name", name);
                     //Log.w("ExpectedHashForChunk", expectedHash[0]);
                 }
 
                 check[0] = true;
             }   else {
-                Log.e(TAG, "Failed to retrieve file hash");
+                Log.e(TAG, "Failed to retrieve list of hash");
             }
         } catch (IOException e) {
-            Log.e("RequestMovie", "Error in Retrofit request", e);
+            Log.e(TAG, "Error in Retrofit request", e);
         }
 
     }

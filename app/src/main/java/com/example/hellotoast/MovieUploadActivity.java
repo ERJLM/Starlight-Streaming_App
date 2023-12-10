@@ -163,7 +163,7 @@ public class MovieUploadActivity extends AppCompatActivity {
                 protected String doInBackground(String... params) {
                     MyDialogFragment loadingDialog = new MyDialogFragment();
                     loadingDialog.show(getSupportFragmentManager(), "dialog");
-                    Log.d("FILE_UPLOADER", "Step 0");
+                    Log.d("MOVIEUPLOAD", "Step 0");
                     try {
                         URLConnection connection = new URL(url).openConnection();
 
@@ -207,9 +207,9 @@ public class MovieUploadActivity extends AppCompatActivity {
                         if (loadingDialog != null && loadingDialog.isVisible()) {
                             loadingDialog.dismiss();
                         }
-                        Log.w("FILE_UPLOADER", String.valueOf(responseCode));
+                        Log.w("MOVIEUPLOAD", String.valueOf(responseCode));
                     } catch (Exception e) {
-                        Log.e("FILE_UPLOADER", "ERRO: " + e.toString());
+                        Log.e("MOVIEUPLOAD", "ERRO: " + e.toString());
                         System.out.println(e.getMessage());
                     }
                     return null;

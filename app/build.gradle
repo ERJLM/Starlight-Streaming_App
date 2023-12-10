@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId 'com.example.hellotoast'
-        minSdk 21
+        minSdk 31
         //noinspection ExpiredTargetSdkVersion
         targetSdk 28
         versionCode 1

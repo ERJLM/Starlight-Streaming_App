@@ -30,7 +30,7 @@
         android:theme="@style/Theme.HelloToast"
         tools:targetApi="31">
         <activity
-            android:name=".PlayerActivity"
+            android:name=".MoviePlayerActivity"
             android:exported="false"/>
         <activity
             android:name=".UserDetailActivity"
@@ -44,7 +44,7 @@
             android:exported="false"/>
 
         <activity
-            android:name=".AddUsersActivity"
+            android:name=".UsersAddActivity"
             android:exported="false"/>
         <activity
             android:name=".MovieUploadActivity"
@@ -53,7 +53,7 @@
             android:name=".MovieSelectorActivity"
             android:exported="false"/>
         <activity
-            android:name=".ManageUsersActivity"
+            android:name=".UsersManageActivity"
             android:exported="false"/>
         <activity
             android:name=".CMSActivity"
