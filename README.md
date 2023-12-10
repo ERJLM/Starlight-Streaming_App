@@ -5,7 +5,7 @@
 ### Android App
 ##### Pontos importantes:
 ###### Utilizamos:
-- O exoplayer para o reprodutor de video.
+- O Exoplayer para o reprodutor de video.
 - O NanoHTTPD como servidor embebido para a app.
 - O Retrofit para fazer as requests da app para o Application Server.
 - O algoritmo SHA256 para calcular e verificar as hashes dos chunks dos filmes.
