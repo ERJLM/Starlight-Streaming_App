@@ -16,8 +16,6 @@
         android:layout_gravity="center_horizontal"
         android:background="@drawable/rounded_shape"
         android:orientation="vertical"
-
-
         android:padding="24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

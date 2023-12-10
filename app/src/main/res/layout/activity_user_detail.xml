@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
 
-        app:cardBackgroundColor="@color/material_dynamic_primary40"
+        app:cardBackgroundColor="@android:color/system_accent1_600"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,7 +57,6 @@
                 android:text="Name: "
                 android:textColor="@color/white"
                 android:textSize="18sp" />
-
 
 
             <TextView
