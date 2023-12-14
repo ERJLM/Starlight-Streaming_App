@@ -144,7 +144,7 @@ public class MoviePlayerActivity extends AppCompatActivity {
         if(confirm) {
             user.setSeeder(movie.getId());
             for (int i = 0; i < num_of_chunks; i++) {
-                String title = "RequestSeed getResponse" + String.format("%03d", i) + ".ts";
+                String title = "data" + String.format("%03d", i) + ".ts";
                 String chunkUrl = download_link + "/" + title;
                 String localFilePath = MovieDownloadManager.downloadVideo(MoviePlayerActivity.this, chunkUrl, title );
                 Log.w("RequestSeed getResponse", "chunk " + i + "downloaded with url: " + chunkUrl);

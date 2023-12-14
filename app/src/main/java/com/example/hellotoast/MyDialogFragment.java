@@ -42,7 +42,6 @@ public class MyDialogFragment extends DialogFragment {
     @Override
     public void onResume() {
         super.onResume();
-
     }
 
     @Override
