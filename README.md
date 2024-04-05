@@ -1,30 +1,30 @@
 # Starlight
 
-## Projeto no âmbito da unidade curricular de Programação de Dispositivos Movéis por Eliandro Melo e Patrick Daniel.
+## Project within the scope of the Mobile Device Programming course by Eliandro Melo and Patrick Daniel.
 
 ### Android App
-##### Pontos importantes:
-###### Utilizamos:
-- O Exoplayer para o reprodutor de video.
-- O NanoHTTPD como servidor embebido para a app.
-- O Retrofit para fazer as requests da app para o Application Server.
-- O algoritmo SHA256 para calcular e verificar as hashes dos chunks dos filmes.
+##### Important points:
+###### We use:
+- Exoplayer for video player.
+- NanoHTTPD as an embedded server for the app.
+- Retrofit to make app requests to the Application Server.
+- The SHA256 algorithm to calculate and verify the hashes of movie chunks.
 
 ### Cloud Services
 
-Serviços desenvolvidos em ambiente Windows (11) e testados em ambiente Linux (Ubuntu 22.04 LTS).
+Services developed in a Windows environment (11) and tested in a Linux environment (Ubuntu 22.04 LTS).
 
-#### Application-Server-API-Starlight (Request_solver): 
-Servidor (Jetty) com a REST API (usando Jersey) na porta 8080 da VM1 (34.170.81.106) na Cloud, responsável por tratar dos pedidos que envolvem dados que estão na base de dados.
+#### Application-Server-API-Starlight (Request_solver):
+Server (Jetty) with the REST API (using Jersey) on port 8080 of VM1 (34.170.81.106) in the Cloud, responsible for handling requests involving data in the database.
 
-#### Application-Server-File-Uploader-Starlight (File_Receiver_Uploader): 
-Servidor (Tomcat) com uma Servlet na porta 9090 da VM1 (34.170.81.106) na Cloud, responsável por tratar do Upload de vídeos (isto é, receber os vídeos, rodar FFMPEG, gerar as hashes SHA-256, inserir na BD e enviar os chunks para o Storage Volume "na VM2").
+#### Application-Server-File-Uploader-Starlight (File_Receiver_Uploader):
+Server (Tomcat) with a Servlet on port 9090 of VM1 (34.170.81.106) in the Cloud, responsible for handling video uploads (that is, receiving the videos, running FFMPEG, generating SHA-256 hashes, inserting them into the DB and sending the chunks to the Storage Volume "on VM2").
 
-#### Storage-Volume-Starlight (Storage_Volume_File_Receiver): 
-Servidor (Tomcat) com uma servlet na porta 6666 da VM2 (34.39.11.61) na Cloud, responsável por receber os chunks dos vídeos e colocar no diretório correto do Storage Volume (NGINX).
+#### Storage-Volume-Starlight (Storage_Volume_File_Receiver):
+Server (Tomcat) with a servlet on port 6666 of VM2 (34.39.11.61) in the Cloud, responsible for receiving the video chunks and placing them in the correct Storage Volume directory (NGINX).
 
-#### Database-Starlight: 
-Base de dados SQL na VM1 com 3 tabelas (user_tbl, movie_tbl e chunk_tbl).
+#### Database-Starlight:
+SQL database on VM1 with 3 tables (user_tbl, movie_tbl and chunk_tbl).
 
  
-###### Todos os módulos foram compilados com o Maven.
+###### All modules were compiled with Maven.
